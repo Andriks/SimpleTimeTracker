@@ -5,41 +5,50 @@
 
 #include "AppChangeEventDriver.h"
 
+using namespace aced;
 
 AppChangeEventDriver::AppChangeEventDriver() {}
 AppChangeEventDriver::~AppChangeEventDriver() {}
 
 void AppChangeEventDriver::start() {
-    std::cout << "[beg] AppChangeEventDriver::start()" << std::endl;
-        
-        std::string pid_cache;
-        std::string title_cache;
-        std::string appname_cache;
+    AppInfo currApp;
+    mLastPoint = std::chrono::system_clock::now();
 
     // run event loop
     while (true) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
         std::string pid = exec_cmd("xdotool getactivewindow getwindowpid");
+
+        std::string name_request = "ps -p " + pid + " -o comm=";
+        std::string name = exec_cmd(name_request.c_str());
+
         std::string title = exec_cmd("xdotool getwindowfocus getwindowname");
+        auto timeStarted = std::chrono::system_clock::now();
 
-        std::string appname_request = "ps -p " + pid + " -o comm=";
-        std::string appname = exec_cmd(appname_request.c_str());
+        if (currApp.pid != pid) {
+            currApp.pid = pid;
+            currApp.name = name;
+            currApp.title = title;
+            currApp.timeStarted = timeStarted;
+            sendChangeEvent(currApp);
 
-        if (pid_cache != pid) {
-            pid_cache = pid;
-            title_cache = title;
-            appname_cache = appname;
-
-            std::cout << "[pid:" << pid << "] --> " << appname << std::endl;
-            std::cout << title << std::endl;
-            std::cout << "=================================" << std::endl;
-
+            mLastPoint = timeStarted;
         }
     }
-
-    std::cout << "[end] AppChangeEventDriver::start()" << std::endl;
 }
+
+
+void AppChangeEventDriver::sendChangeEvent(AppInfo newApp) {
+    std::chrono::duration<float> fsec = newApp.timeStarted - mLastPoint;
+
+    std::cout << "duration --> " << fsec.count() << " (sec)" << std::endl;
+    std::cout << "=================================" << std::endl;
+
+    std::cout << "[pid:" << newApp.pid << "] --> " << newApp.name << std::endl;
+    std::cout << newApp.title << std::endl;
+}
+
 
 std::string AppChangeEventDriver::exec_cmd(char* cmd) {
     FILE* pipe = popen(cmd, "r");
@@ -51,5 +60,6 @@ std::string AppChangeEventDriver::exec_cmd(char* cmd) {
                 result += buffer;
     }
     pclose(pipe);
+    // remove last symbol '\n' before return
     return result.substr(0, result.size()-1);
 }
