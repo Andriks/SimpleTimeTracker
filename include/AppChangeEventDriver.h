@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include <string>
+
 class AppChangeEventDriver
 {
 public:
@@ -8,5 +10,8 @@ public:
     ~AppChangeEventDriver();
     
     void start();
+
+private:
+    std::string exec_cmd(char* cmd);
 
 };

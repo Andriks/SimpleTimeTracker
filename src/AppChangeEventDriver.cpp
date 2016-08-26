@@ -1,5 +1,6 @@
 #include <iostream>
-#include <string>
+#include <stdio.h>
+#include <thread>
 #include <X11/Xlib.h>
 
 #include "AppChangeEventDriver.h"
@@ -8,23 +9,26 @@
 AppChangeEventDriver::AppChangeEventDriver() {}
 AppChangeEventDriver::~AppChangeEventDriver() {}
 
-void AppChangeEventDriver::start() {
-    std::cout << "AppChangeEventDriver::start()" << std::endl;
-
-    Display* display;
-    Window focus;
-    char* window_name;
-    int revert;
-
-    display = XOpenDisplay(nullptr);
-    XGetInputFocus(display, &focus, &revert);
-    XFetchName(display, focus, &window_name);
-
-    if (window_name == nullptr) {
-        std::cout << "window name error" << std::endl;
-        return;
+std::string AppChangeEventDriver::exec_cmd(char* cmd) {
+    FILE* pipe = popen(cmd, "r");
+    if (!pipe) return "ERROR";
+    char buffer[128];
+    std::string result = "";
+    while(!feof(pipe)) {
+        if(fgets(buffer, 128, pipe) != NULL)
+                result += buffer;
     }
+    pclose(pipe);
+    return result;
+}
 
-    std::string str_name(window_name);
-    std::cout << "app name -->  " << window_name << std::endl;
+void AppChangeEventDriver::start() {
+    std::cout << "[beg] AppChangeEventDriver::start()" << std::endl;
+
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+
+    std::string result = exec_cmd("xdotool getwindowfocus getwindowname");
+    std::cout << "-->" << result << "<--" << std::endl; 
+
+    std::cout << "[end] AppChangeEventDriver::start()" << std::endl;
 }
