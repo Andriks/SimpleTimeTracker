@@ -2,6 +2,7 @@
 
 CXX = g++
 CPP_FLAGS += -g -O0 -Wall -pthread -std=c++11
+LIBS = -lX11
 
 OBJ_DIR = obj
 BIN_DIR = bin
@@ -37,7 +38,7 @@ clean:
 	rm -rf $(OBJ_DIR) $(BIN_DIR)
 
 acedRunner: $(OBJ)
-	$(CXX) $(CPP_FLAGS) -o $(BIN_DIR)/$@ $^
+	$(CXX) $(CPP_FLAGS) -o $(BIN_DIR)/$@ $^ $(LIBS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CPP_FLAGS) -c $(INC_PATH) $< -o $@
