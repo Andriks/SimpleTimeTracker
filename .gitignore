@@ -1,0 +1,11 @@
+
+# tmp files
+*~
+
+# obj files
+*.o
+*.so
+*.a
+
+# all obj dir
+obj/*
