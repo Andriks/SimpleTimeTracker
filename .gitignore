@@ -7,5 +7,6 @@
 *.so
 *.a
 
-# all obj dir
+# obj && bin dirs
 obj/*
+bin/*
