@@ -1,7 +1,9 @@
 
 
 CXX = g++
-CPP_FLAGS += -g -O0 -Wall -pthread -std=c++11
+CPP_FLAGS += -g -O0 -pthread -std=c++11
+CPP_FLAGS += -fpermissive
+# CPP_FLAGS += -Wall
 LIBS = -lX11
 
 OBJ_DIR = obj
