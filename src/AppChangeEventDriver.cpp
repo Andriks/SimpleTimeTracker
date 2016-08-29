@@ -1,9 +1,13 @@
+#include "AppChangeEventDriver.h"
+
 #include <iostream>
 #include <stdio.h>
 #include <thread>
+#include <chrono>
+
 #include <X11/Xlib.h>
 
-#include "AppChangeEventDriver.h"
+#include "SignalHandler.h"
 
 using namespace aced;
 
@@ -47,6 +51,9 @@ void AppChangeEventDriver::sendChangeEvent(AppInfo newApp) {
 
     std::cout << "[pid:" << newApp.pid << "] --> " << newApp.name << std::endl;
     std::cout << newApp.title << std::endl;
+
+    ISignalHandler& sigHandler = SignalHandler::Instance();
+    sigHandler.sendChangeAppEvent(newApp);
 }
 
 

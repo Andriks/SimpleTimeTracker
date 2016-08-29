@@ -4,12 +4,13 @@
 class DataBase: public IDataBase
 {
 public:
-    // singleton implementation
+
+    ~DataBase() override;
+    void write() override;
+
+// singleton implementation
+public:
     static IDataBase& Instance();
-
-    virtual ~DataBase();
-    virtual void write();
-
 private:
     DataBase();
 

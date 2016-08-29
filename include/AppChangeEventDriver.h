@@ -2,19 +2,10 @@
 #pragma once
 
 #include <string>
-#include <chrono>
+
+#include "CommonTypes.h"
 
 namespace aced {
-
-typedef std::chrono::system_clock::time_point time_point;
-
-struct AppInfo
-{
-    std::string pid;
-    std::string name;
-    std::string title;
-    time_point timeStarted;
-};
 
 class AppChangeEventDriver
 {
