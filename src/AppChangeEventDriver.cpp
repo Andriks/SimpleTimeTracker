@@ -52,13 +52,18 @@ void AppChangeEventDriver::sendChangeEvent(AppInfo newApp) {
 
 std::string AppChangeEventDriver::exec_cmd(char* cmd) {
     FILE* pipe = popen(cmd, "r");
-    if (!pipe) return "ERROR";
+    if (!pipe) {
+        return "ERROR\n";
+    }
+
     char buffer[128];
     std::string result = "";
-    while(!feof(pipe)) {
-        if(fgets(buffer, 128, pipe) != NULL)
-                result += buffer;
+    while (!feof(pipe)) {
+        if (fgets(buffer, 128, pipe) != nullptr) {
+            result += buffer;
+        }
     }
+
     pclose(pipe);
     // remove last symbol '\n' before return
     return result.substr(0, result.size()-1);
