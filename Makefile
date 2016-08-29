@@ -19,6 +19,8 @@ INC_PATH = \
 SRC_CPP = \
 	main.cpp \
 	AppChangeEventDriver.cpp \
+	SignalHandler.cpp \
+	DataBase.cpp \
 	$(NULL)
 
 OBJ += $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SRC_CPP))
