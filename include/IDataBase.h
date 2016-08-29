@@ -1,9 +1,10 @@
 
+#include "CommonTypes.h"
 
 class IDataBase
 {
 public:
     virtual ~IDataBase() {}
-    virtual void write() = 0;
+    virtual void write(AppInfo newApp) = 0;
 
 };

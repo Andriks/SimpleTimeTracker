@@ -1,5 +1,6 @@
 
 #include "SignalHandler.h"
+#include "DataBase.h"
 
 #include <iostream>
 
@@ -12,5 +13,9 @@ ISignalHandler& SignalHandler::Instance() {
 }
 
 void SignalHandler::sendChangeAppEvent(AppInfo newApp) {
-    std::cout << "SignalHandler::sendChangeAppEvent()" << std::endl;
+    std::cout << "[pid:" << newApp.pid << "] --> " << newApp.name << std::endl;
+    std::cout << newApp.title << std::endl;
+
+    IDataBase& db = DataBase::Instance();
+    db.write(newApp);
 }
