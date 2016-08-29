@@ -27,10 +27,10 @@ OBJ += $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SRC_CPP))
 
 all: build
 
-build: mkdir acedRunner
+build: mkdir simpleTimeTrackerEXE
 
 run: build
-	$(BIN_DIR)/acedRunner
+	$(BIN_DIR)/simpleTimeTrackerEXE
 
 mkdir:
 	@mkdir -p $(OBJ_DIR)
@@ -39,7 +39,7 @@ mkdir:
 clean: 
 	rm -rf $(OBJ_DIR) $(BIN_DIR)
 
-acedRunner: $(OBJ)
+simpleTimeTrackerEXE: $(OBJ)
 	$(CXX) $(CPP_FLAGS) -o $(BIN_DIR)/$@ $^ $(LIBS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
