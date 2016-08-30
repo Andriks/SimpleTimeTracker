@@ -1,0 +1,3 @@
+
+# run tracking
+./bin/simpleTimeTrackerEXE $@
