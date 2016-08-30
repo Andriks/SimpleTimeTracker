@@ -1,7 +1,6 @@
 #include "AppChangeEventDriver.h"
 #include "SignalHandler.h"
 
-#include <iostream>
 #include <stdio.h>
 #include <thread>
 #include <chrono>
@@ -14,44 +13,27 @@ AppChangeEventDriver::AppChangeEventDriver() {}
 AppChangeEventDriver::~AppChangeEventDriver() {}
 
 void AppChangeEventDriver::start() {
-    AppInfo currApp;
-    mLastPoint = std::chrono::system_clock::now();
+    AppInfo lastApp = getCurrAppInfo();
 
     // run event loop
     while (true) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
         std::string pid = exec_cmd("xdotool getactivewindow getwindowpid");
-
-        std::string name_request = "ps -p " + pid + " -o comm=";
-        std::string name = exec_cmd(name_request.c_str());
-
-        std::string title = exec_cmd("xdotool getwindowfocus getwindowname");
-        auto timeStarted = std::chrono::system_clock::now();
-
-        if (currApp.pid != pid) {
-            currApp.pid = pid;
-            currApp.name = name;
-            currApp.title = title;
-            currApp.timeStarted = timeStarted;
-            sendChangeEvent(currApp);
-
-            mLastPoint = timeStarted;
+        if (lastApp.pid != pid) {
+            std::chrono::duration<float> fsec = std::chrono::system_clock::now() - lastApp.timeStarted;
+            lastApp.duration = fsec.count();
+            
+            sendChangeEvent(lastApp);
+            lastApp = getCurrAppInfo();
         }
     }
 }
 
-
 void AppChangeEventDriver::sendChangeEvent(AppInfo newApp) {
-    std::chrono::duration<float> fsec = newApp.timeStarted - mLastPoint;
-
-    std::cout << "duration --> " << fsec.count() << " (sec)" << std::endl;
-    std::cout << "=================================" << std::endl;
-
     ISignalHandler& sigHandler = SignalHandler::Instance();
     sigHandler.sendChangeAppEvent(newApp);
 }
-
 
 std::string AppChangeEventDriver::exec_cmd(char* cmd) {
     FILE* pipe = popen(cmd, "r");
@@ -70,4 +52,22 @@ std::string AppChangeEventDriver::exec_cmd(char* cmd) {
     pclose(pipe);
     // remove last symbol '\n' before return
     return result.substr(0, result.size()-1);
+}
+
+AppInfo AppChangeEventDriver::getCurrAppInfo() {
+    std::string pid = exec_cmd("xdotool getactivewindow getwindowpid");
+
+    std::string name_request = "ps -p " + pid + " -o comm=";
+    std::string name = exec_cmd(name_request.c_str());
+
+    std::string title = exec_cmd("xdotool getwindowfocus getwindowname");
+    auto timeStarted = std::chrono::system_clock::now();
+
+    AppInfo result;
+    result.pid = pid;
+    result.name = name;
+    result.title = title;
+    result.timeStarted = timeStarted;
+
+    return result;
 }

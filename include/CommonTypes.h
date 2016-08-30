@@ -13,4 +13,5 @@ public:
     std::string name;
     std::string title;
     time_point timeStarted;
+    float duration;
 };

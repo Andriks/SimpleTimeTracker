@@ -7,10 +7,7 @@
 #include <ctime>
 
 
-
-DataBase::DataBase() {
-    mDBDoc = std::shared_ptr<TiXmlDocument>(new TiXmlDocument());
-}
+DataBase::DataBase() {}
 DataBase::~DataBase() {}
 
 IDataBase& DataBase::Instance() {
@@ -19,7 +16,6 @@ IDataBase& DataBase::Instance() {
 }
 
 void DataBase::write(AppInfo newApp) {
-    std::cout << "DataBase::write()" << std::endl;
     writeToXML(newApp);
 }
 
@@ -32,26 +28,26 @@ void DataBase::updateDBDoc() {
     timeinfo = std::localtime(&rawtime);
 
     std::strftime(buffer,80,"%Y_%m_%d",timeinfo);
-    std::string filename(buffer);
-    filename = "./bin/" + filename + ".xml";
+    std::string day = buffer;
+    std::string filename = makeFilename(day);
 
     std::ifstream infile(filename);
     if (!infile.good()) {
-        mDBDocName = buffer;
-        mDBDoc = std::shared_ptr<TiXmlDocument>(new TiXmlDocument(filename));
+        mDBDocName = day;
 
         TiXmlDeclaration* decl = new TiXmlDeclaration( "1.0", "", "" );
         TiXmlElement* root = new TiXmlElement( "Root" );
+        root->SetAttribute("day", mDBDocName);
 
-        mDBDoc->LinkEndChild(decl);
-        mDBDoc->LinkEndChild(root);
+        mDBDoc.LinkEndChild(decl);
+        mDBDoc.LinkEndChild(root);
 
-        mDBDoc->SaveFile(filename);
-    } else if (buffer != mDBDocName) {
-        if (!mDBDoc->LoadFile(filename)) {
-            std::cout << "can't load " << filename << std::endl;
+        mDBDoc.SaveFile(filename);
+    } else if (day != mDBDocName) {
+        if (!mDBDoc.LoadFile(filename)) {
+            std::cerr << "can't load " << filename << std::endl;
         }
-        mDBDocName = buffer;
+        mDBDocName = day;
     }
 }
 
@@ -59,29 +55,28 @@ void DataBase::writeToXML(AppInfo newApp)
 {
     updateDBDoc();
 
-    TiXmlElement* root = nullptr;
-    root = mDBDoc->FirstChildElement(); 
+    TiXmlElement* node = new TiXmlElement("Application");
+    node->SetAttribute("pid", newApp.pid);
 
-    TiXmlElement node("Application");
-    node.SetAttribute("name", newApp.name);
+    appendSimpleNode(node, "Name", newApp.name);
+    appendSimpleNode(node, "Title", newApp.title);
+    appendSimpleNode(node, "Duration", std::to_string(newApp.duration));
 
-    TiXmlElement pid("Pid");
-    TiXmlText pidText(newApp.pid);
-    pid.LinkEndChild(&pidText);
-    node.LinkEndChild(&pid);
+    long time = newApp.timeStarted.time_since_epoch().count();
+    appendSimpleNode(node, "TimeStarted", std::to_string(time));
 
-    TiXmlElement title("Title");
-    TiXmlText titleText(newApp.title);
-    title.LinkEndChild(&titleText);
-    node.LinkEndChild(&title);
+    TiXmlElement* root = mDBDoc.FirstChildElement();
+    root->LinkEndChild(node);
+    mDBDoc.SaveFile(makeFilename(mDBDocName));
+}
 
-    // auto time std::chrono::time_point_cast<std::chrono::milliseconds>(newApp.timeStarted)
-    // int time = newApp.timeStarted.time_since_epoch().count();
-    // TiXmlElement timeStarted("Title");
-    // TiXmlText timeStartedText(time);
-    // timeStarted.LinkEndChild(&timeStartedText);
-    // node.LinkEndChild(&timeStarted);
+void DataBase::appendSimpleNode(TiXmlElement* parent, std::string name, std::string text) const {
+    TiXmlElement* node = new TiXmlElement(name);
+    TiXmlText* nodeText = new TiXmlText(text);
+    node->LinkEndChild(nodeText);
+    parent->LinkEndChild(node);
+}
 
-    root->LinkEndChild(&node);
-    mDBDoc->SaveFile("./bin/" + mDBDocName + ".xml" );
+std::string DataBase::makeFilename(std::string day) {
+    return "./bin/" + day + ".xml";
 }

@@ -13,10 +13,13 @@ public:
 private:
     void updateDBDoc();
     void writeToXML(AppInfo newApp);
+    void appendSimpleNode(TiXmlElement* parent, std::string name, std::string text) const;
 
+    // makes filename as './some/path/2000_01_01.xml' from day as '2000_01_01'
+    std::string makeFilename(std::string day);
 
 private:
-    std::shared_ptr<TiXmlDocument> mDBDoc = nullptr;
+    TiXmlDocument mDBDoc;
     std::string mDBDocName = "";
 
 

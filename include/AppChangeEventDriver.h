@@ -19,8 +19,9 @@ protected:
     void sendChangeEvent(AppInfo newApp);
     std::string exec_cmd(char* cmd);
 
+    AppInfo getCurrAppInfo();
+
 private:
-    time_point mLastPoint;
 
 };
 
