@@ -78,5 +78,5 @@ void DataBase::appendSimpleNode(TiXmlElement* parent, std::string name, std::str
 }
 
 std::string DataBase::makeFilename(std::string day) {
-    return "./bin/" + day + ".xml";
+    return "./data/" + day + ".xml";
 }

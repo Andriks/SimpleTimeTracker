@@ -7,6 +7,9 @@
 *.so
 *.a
 
-# obj && bin dirs
+# obj/ && bin* dirs
 obj/*
 bin/*
+
+# ignore for tmp dir data/
+data/*
