@@ -68,6 +68,7 @@ AppInfo AppChangeEventDriver::getCurrAppInfo() {
     result.name = name;
     result.title = title;
     result.timeStarted = timeStarted;
+    result.timeStarted_.init(timeStarted);
 
     return result;
 }

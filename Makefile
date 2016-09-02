@@ -21,6 +21,7 @@ SRC_CPP = \
 	AppChangeEventDriver.cpp \
 	SignalHandler.cpp \
 	DataBase.cpp \
+	TimeInfo.cpp \
 	$(NULL)
 
 OBJ += $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SRC_CPP))
