@@ -62,8 +62,7 @@ void DataBase::writeToXML(AppInfo newApp)
     appendSimpleNode(node, "Title", newApp.title);
     appendSimpleNode(node, "Duration", std::to_string(newApp.duration));
 
-    long time = newApp.timeStarted.time_since_epoch().count();
-    appendSimpleNode(node, "TimeStarted", std::to_string(time));
+    appendSimpleNode(node, "TimeStarted", std::to_string(newApp.timeStarted.toLong()));
 
     TiXmlElement* root = mDBDoc.FirstChildElement();
     root->LinkEndChild(node);
