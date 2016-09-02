@@ -5,7 +5,6 @@
 
 class TimeInfo
 {
-
     typedef std::chrono::system_clock::time_point time_point;
 
 public:
@@ -13,6 +12,9 @@ public:
     TimeInfo(long longTp);
     TimeInfo(const time_point &tp);
     void init(const time_point &tp);
+
+    static long fromTimePointToLong(const time_point &tp);
+    static time_point fromLongToTimePoint(const long longTp);
 
     int year() const;
     int month() const;
