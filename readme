@@ -1,0 +1,16 @@
+
+Simple Time Tracker
+Program was developed to help you to contol where your time was spended.
+It will automaticaly collect information about applications which you working with and time you spent there.
+
+USAGE:
+At this time you can use run.sh
+
+For starting/stoping server use:
+./run.sh start
+and
+./run.sh stop
+
+TODO:
+For getting report use:
+./run.sh start report somequery
