@@ -3,8 +3,10 @@
 
 #include "IServer.h"
 #include "AppChangeEventDriver.h"
+#include "stt_algorithm.h"
 
 #include <string>
+#include <memory>
 #include <unistd.h>
 
 class DeamonCreator : public IServer
@@ -32,6 +34,6 @@ private:
     bool procExists(pid_t pid);
 
 private:
-    aced::AppChangeEventDriver mDriver;
+    std::unique_ptr<IServer> mDriver = algo::make_unique<aced::AppChangeEventDriver>();
     static std::string mLockfileName;
 };

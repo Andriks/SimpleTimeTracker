@@ -43,7 +43,7 @@ void DeamonCreator::start() {
         lockfile << getpid() << std::endl;
         lockfile.close();
 
-        mDriver.start();
+        mDriver->start();
     default:
         // will just end parent process
         exit(0);
@@ -64,7 +64,7 @@ void DeamonCreator::stop() {
             }
 
             std::cout << "===> STT SERVER: server process stoped" << std::endl;
-            mDriver.stop();
+            mDriver->stop();
             exit(0);
         }
     } else {
