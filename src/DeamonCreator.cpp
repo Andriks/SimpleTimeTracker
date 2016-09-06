@@ -16,10 +16,10 @@ DeamonCreator::DeamonCreator() {}
 DeamonCreator::~DeamonCreator() {}
 
 void DeamonCreator::start() {
-    std::string demonPid = getDeamonPid();
-    if ( procExists(atoi(demonPid.c_str())) ) {
+    if (isRunning()) {
+        std::string pidStr = getDeamonPid();
         std::cout << "===> STT SERVER: server process exists!!!" << std::endl
-                  << "===> STT SERVER: server process PID " << demonPid <<std::endl;
+                  << "===> STT SERVER: server PID " << pidStr <<std::endl;
 
         exit(0);
     }
@@ -51,10 +51,8 @@ void DeamonCreator::start() {
 }
 
 void DeamonCreator::stop() {
-    std::string demonPid = getDeamonPid();
-
-    if (!demonPid.empty()) {
-        pid_t pid = atoi(demonPid.c_str());
+    if (isRunning()) {
+        pid_t pid = atoi(getDeamonPid().c_str());
         if (pid != getpid()) {
             // send SIGQUIT to real deamon process
             kill(pid, SIGQUIT);
@@ -74,13 +72,18 @@ void DeamonCreator::stop() {
     }
 }
 
+bool DeamonCreator::isRunning() {
+    std::string pidStr = getDeamonPid();
+    pid_t pid = atoi(pidStr.c_str());
+    return procExists(pid);
+}
+
 void DeamonCreator::registerSignals() {
     signal(SIGQUIT, &DeamonCreator::handleSignal);
     signal(SIGUSR1, &DeamonCreator::handleSignal);
 }
 
-void DeamonCreator::handleSignal(const int signum)
-{
+void DeamonCreator::handleSignal(const int signum){
     switch (signum) {
     case SIGQUIT:
         DeamonCreator::Get().stop();

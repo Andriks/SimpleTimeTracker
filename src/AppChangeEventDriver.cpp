@@ -13,10 +13,15 @@ AppChangeEventDriver::AppChangeEventDriver() {}
 AppChangeEventDriver::~AppChangeEventDriver() {}
 
 void AppChangeEventDriver::start() {
+    if (isRunning()) {
+        return;
+    }
+
+    mIsRunning = true;
     mLastApp = getCurrAppInfo();
 
     // run event loop
-    while (true) {
+    while (isRunning()) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
         std::string pid = exec_cmd("xdotool getactivewindow getwindowpid");
@@ -27,7 +32,14 @@ void AppChangeEventDriver::start() {
 }
 
 void AppChangeEventDriver::stop() {
-    forceSendChangeEvent();
+    if (isRunning()) {
+        mIsRunning = false;
+        forceSendChangeEvent();
+    }
+}
+
+bool AppChangeEventDriver::isRunning() {
+    return mIsRunning;
 }
 
 void AppChangeEventDriver::forceSendChangeEvent() {
