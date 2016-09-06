@@ -17,13 +17,14 @@ public:
     void stop();
 
 protected:
-    void forceSendChangeEvent(AppInfo newApp);
+    void forceSendChangeEvent();
     void sendChangeEvent(AppInfo newApp);
     std::string exec_cmd(char* cmd);
 
     AppInfo getCurrAppInfo();
 
 private:
+    AppInfo mLastApp;
 
 };
 

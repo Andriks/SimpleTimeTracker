@@ -13,29 +13,29 @@ AppChangeEventDriver::AppChangeEventDriver() {}
 AppChangeEventDriver::~AppChangeEventDriver() {}
 
 void AppChangeEventDriver::start() {
-    AppInfo lastApp = getCurrAppInfo();
+    mLastApp = getCurrAppInfo();
 
     // run event loop
     while (true) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
         std::string pid = exec_cmd("xdotool getactivewindow getwindowpid");
-        if (lastApp.pid != pid) {
-            std::chrono::duration<float> fsec = std::chrono::system_clock::now() - lastApp.timeStarted.toTimePoint();
-            lastApp.duration = fsec.count();
-            
-            sendChangeEvent(lastApp);
-            lastApp = getCurrAppInfo();
+        if (mLastApp.pid != pid) {
+            forceSendChangeEvent();
         }
     }
 }
 
 void AppChangeEventDriver::stop() {
-    
+    forceSendChangeEvent();
 }
 
-void forceSendChangeEvent(AppInfo newApp) {
+void AppChangeEventDriver::forceSendChangeEvent() {
+    std::chrono::duration<float> fsec = std::chrono::system_clock::now() - mLastApp.timeStarted.toTimePoint();
+    mLastApp.duration = fsec.count();
     
+    sendChangeEvent(mLastApp);
+    mLastApp = getCurrAppInfo();
 }
 
 void AppChangeEventDriver::sendChangeEvent(AppInfo newApp) {
