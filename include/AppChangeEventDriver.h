@@ -14,8 +14,10 @@ public:
     ~AppChangeEventDriver();
     
     void start();
+    void stop();
 
 protected:
+    void forceSendChangeEvent(AppInfo newApp);
     void sendChangeEvent(AppInfo newApp);
     std::string exec_cmd(char* cmd);
 

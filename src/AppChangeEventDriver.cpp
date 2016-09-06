@@ -30,6 +30,14 @@ void AppChangeEventDriver::start() {
     }
 }
 
+void AppChangeEventDriver::stop() {
+    
+}
+
+void forceSendChangeEvent(AppInfo newApp) {
+    
+}
+
 void AppChangeEventDriver::sendChangeEvent(AppInfo newApp) {
     ISignalHandler& sigHandler = SignalHandler::Instance();
     sigHandler.sendChangeAppEvent(newApp);

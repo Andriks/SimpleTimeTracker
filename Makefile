@@ -18,6 +18,7 @@ INC_PATH = \
 
 SRC_CPP = \
 	main.cpp \
+	DeamonCreator.cpp \
 	AppChangeEventDriver.cpp \
 	SignalHandler.cpp \
 	DataBase.cpp \
