@@ -1,19 +1,14 @@
 
 #pragma once
 
-#include <string>
-
-#include "CommonTypes.h"
 #include "IServer.h"
+#include "CommonTypes.h"
 
-namespace aced {
+#include <string>
 
 class AppChangeEventDriver : public IServer
 {
 public:
-    AppChangeEventDriver();
-    ~AppChangeEventDriver();
-    
     void start() override;
     void stop() override;
     bool isRunning() override;
@@ -31,6 +26,3 @@ private:
     AppInfo mLastApp;
 
 };
-
-
-} // aced

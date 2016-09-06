@@ -7,10 +7,6 @@
 
 #include <X11/Xlib.h>
 
-using namespace aced;
-
-AppChangeEventDriver::AppChangeEventDriver() {}
-AppChangeEventDriver::~AppChangeEventDriver() {}
 
 void AppChangeEventDriver::start() {
     if (isRunning()) {
@@ -51,8 +47,7 @@ void AppChangeEventDriver::forceSendChangeEvent() {
 }
 
 void AppChangeEventDriver::sendChangeEvent(AppInfo newApp) {
-    ISignalHandler& sigHandler = SignalHandler::Instance();
-    sigHandler.sendChangeAppEvent(newApp);
+    SignalHandler::Get().sendChangeAppEvent(newApp);
 }
 
 std::string AppChangeEventDriver::exec_cmd(char* cmd) {

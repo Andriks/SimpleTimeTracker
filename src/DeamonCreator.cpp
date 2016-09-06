@@ -7,13 +7,12 @@
 
 std::string DeamonCreator::mLockfileName = "./bin/srvlockfile";
 
+DeamonCreator::DeamonCreator() {}
+
 DeamonCreator& DeamonCreator::Get() {
     static DeamonCreator onlyOne;
     return onlyOne;
 }
-
-DeamonCreator::DeamonCreator() {}
-DeamonCreator::~DeamonCreator() {}
 
 void DeamonCreator::start() {
     if (isRunning()) {

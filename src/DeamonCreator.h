@@ -12,7 +12,7 @@
 class DeamonCreator : public IServer
 {
 private:
-    // Singleton implementation
+    /// Singleton implementation
     DeamonCreator();
     DeamonCreator(DeamonCreator const&) = delete;             // Copy construct
     DeamonCreator(DeamonCreator&&) = delete;                  // Move construct
@@ -20,7 +20,6 @@ private:
     DeamonCreator& operator=(DeamonCreator &&) = delete;      // Move assign
 public:
     static DeamonCreator& Get();
-    ~DeamonCreator();
 
     void start() override;
     void stop() override;
@@ -34,6 +33,6 @@ private:
     bool procExists(pid_t pid);
 
 private:
-    std::unique_ptr<IServer> mDriver = algo::make_unique<aced::AppChangeEventDriver>();
+    std::unique_ptr<IServer> mDriver = algo::make_unique<AppChangeEventDriver>();
     static std::string mLockfileName;
 };

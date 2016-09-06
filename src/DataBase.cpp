@@ -8,9 +8,8 @@
 
 
 DataBase::DataBase() {}
-DataBase::~DataBase() {}
 
-IDataBase& DataBase::Instance() {
+IDataBase& DataBase::Get() {
     static DataBase OnlyOne;
     return OnlyOne;
 }

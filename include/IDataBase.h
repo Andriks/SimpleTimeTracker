@@ -1,4 +1,6 @@
 
+#pragma once
+
 #include "CommonTypes.h"
 
 class IDataBase
