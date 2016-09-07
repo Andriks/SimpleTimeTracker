@@ -23,6 +23,7 @@ SRC_CPP = \
 	SignalHandler.cpp \
 	DataBase.cpp \
 	TimeInfo.cpp \
+	stt_algorithm.cpp \
 	$(NULL)
 
 OBJ += $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SRC_CPP))

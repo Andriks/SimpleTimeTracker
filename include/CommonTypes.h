@@ -3,9 +3,11 @@
 
 #include "TimeInfo.h"
 
+#include <vector>
 #include <string>
 #include <iostream>
 
+typedef std::vector<std::string> StrVector;
 
 class AppInfo
 {
