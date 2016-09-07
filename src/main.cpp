@@ -1,11 +1,18 @@
-#include <iostream>
 
 #include "DeamonCreator.h"
+#include "Reporter.h"
+
+#include <iostream>
+#include <vector>
+#include <string>
+
+#include <QCoreApplication>
+#include <QDebug>
 
 
-void makeReport(std::string query);
 
 int main(int argc, char **argv) {
+    QCoreApplication a(argc, argv);
 
     if (argc > 1) {
         std::string cmd = argv[1];
@@ -14,7 +21,16 @@ int main(int argc, char **argv) {
         } else if (cmd == "stop") {
             DeamonCreator::Get().stop();
         } else if (cmd == "report") {
-            makeReport("query");
+            std::string request;
+            for (int i = 2; i < argc; ++i) {
+                request += argv[i];
+                if (argc - i > 1) {
+                    request += " ";
+                }
+            }
+
+            Reporter reporter;
+            reporter.doReport(request);
         } else {
             std::cerr << "[err]: unknown command" << std::endl;
         }
@@ -22,10 +38,5 @@ int main(int argc, char **argv) {
         std::cerr << "[err]: no arguments" << std::endl;
     }
 
-    return 0;
-}
-
-
-void makeReport(std::string query) {
-    std::cout << "some report here" << std::endl;
+    return 0;//a.exec();
 }

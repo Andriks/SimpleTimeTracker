@@ -1,10 +1,10 @@
 
 
 CXX = g++
-CPP_FLAGS += -g -O0 -pthread -std=c++11
+CPP_FLAGS += -g -O0 -pthread -std=c++11 -fPIC
 CPP_FLAGS += -fpermissive
 # CPP_FLAGS += -Wall
-LIBS = -lX11 -ltinyxml
+LIBS = -lX11 -ltinyxml -lQtCore -lQtXml -lQtXmlPatterns
 
 OBJ_DIR = obj
 BIN_DIR = bin
@@ -12,6 +12,10 @@ HEADER_DIR = include
 SRC_DIR = src
 
 INC_PATH = \
+	-I/usr/include/qt4 \
+	-I/usr/include/qt4/QtCore \
+	-I/usr/include/qt4/QtXml \
+	-I/usr/include/qt4/QtXmlPatterns \
 	-I$(HEADER_DIR) \
 	-I$(SRC_DIR) \
 	$(NULL)
@@ -23,6 +27,7 @@ SRC_CPP = \
 	SignalHandler.cpp \
 	DataBase.cpp \
 	TimeInfo.cpp \
+	Reporter.cpp \
 	stt_algorithm.cpp \
 	$(NULL)
 

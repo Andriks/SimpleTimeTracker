@@ -6,6 +6,14 @@
 #include <string>
 #include <ctime>
 
+#include <QtXml>
+#include <QXmlQuery>
+#include <QXmlResultItems>
+#include <QXmlNodeModelIndex>
+#include <QString>
+#include <QFile>
+#include <QFileInfo>
+
 
 DataBase::DataBase() {}
 
@@ -16,6 +24,45 @@ IDataBase& DataBase::Get() {
 
 void DataBase::write(AppInfo newApp) {
     writeToXML(newApp);
+}
+
+
+
+
+StrVector DataBase::getListOfApp(std::string& day) {
+    StrVector result;
+
+    std::string filename = makeFilename(day);
+    if (!fileExists(filename)) {
+        std::cout << "[err] file " << filename << " do not exists" << std::endl;
+        return result;
+    }
+
+    QFile file(filename.c_str());
+    file.open(QFile::ReadOnly);
+
+    QXmlQuery query;
+    query.setFocus(&file);
+    query.setQuery("distinct-values(//Root/Application/Name[text()])");
+
+    QString values;
+    if (query.isValid()) {
+        QXmlResultItems xmlResult;
+        query.evaluateTo(&xmlResult);
+        QXmlItem XmlItem(xmlResult.next());
+
+        while (!XmlItem.isNull()) {
+            if (XmlItem.isAtomicValue()) {
+                QString name = XmlItem.toAtomicValue().toString();
+                result.push_back(name.toStdString());
+            }
+
+            values.append(XmlItem.toAtomicValue().toString());
+            XmlItem = xmlResult.next();
+        }
+    }
+
+    return result;
 }
 
 void DataBase::updateDBDoc() {
@@ -75,6 +122,11 @@ void DataBase::appendSimpleNode(TiXmlElement* parent, std::string name, std::str
     parent->LinkEndChild(node);
 }
 
-std::string DataBase::makeFilename(std::string day) {
+std::string DataBase::makeFilename(std::string& day) {
     return "./data/" + day + ".xml";
+}
+
+bool DataBase::fileExists(std::string& path) {
+    QFileInfo checkFile(path.c_str());
+    return checkFile.exists() && checkFile.isFile();
 }
