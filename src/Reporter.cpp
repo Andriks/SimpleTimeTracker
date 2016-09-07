@@ -19,14 +19,24 @@ void Reporter::doReport(const std::string& request) {
     }
 
     auto requestVec = algo::split(request);
-    if (requestVec[0] == "-d") {
-        auto appList = DataBase::Get().getListOfApp(requestVec[1]);
-        
-        for (auto app : appList) {
-            std::cout << app << std::endl;
-        }
+    if (requestVec[0] == "-d" || requestVec[0] == "--day") {
+        makeDayReport(requestVec[1]);
+    } else if (requestVec[0] == "-i" || requestVec[0] == "--interval") {
+        makeIntervalReport(requestVec[1], requestVec[2]);
     } else {
         std::cout << "unknown command " << requestVec[0] << std::endl;
     }
 }
 
+void Reporter::makeDayReport(const std::string& day) {
+    auto appList = DataBase::Get().getListOfAppByDay(day);
+
+    for (auto app : appList) {
+        std::cout << app << std::endl;
+    }
+}
+
+void Reporter::makeIntervalReport(const std::string& dayBeg, const std::string& dayEnd) {
+    // TODO: implement it
+    std::cout << "not implemented" << std::endl;
+}

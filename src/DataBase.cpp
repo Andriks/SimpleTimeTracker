@@ -26,10 +26,7 @@ void DataBase::write(AppInfo newApp) {
     writeToXML(newApp);
 }
 
-
-
-
-StrVector DataBase::getListOfApp(std::string& day) {
+StrVector DataBase::getListOfAppByDay(const std::string& day) {
     StrVector result;
 
     std::string filename = makeFilename(day);
@@ -122,11 +119,11 @@ void DataBase::appendSimpleNode(TiXmlElement* parent, std::string name, std::str
     parent->LinkEndChild(node);
 }
 
-std::string DataBase::makeFilename(std::string& day) {
+std::string DataBase::makeFilename(const std::string& day) {
     return "./data/" + day + ".xml";
 }
 
-bool DataBase::fileExists(std::string& path) {
+bool DataBase::fileExists(const std::string& path) {
     QFileInfo checkFile(path.c_str());
     return checkFile.exists() && checkFile.isFile();
 }

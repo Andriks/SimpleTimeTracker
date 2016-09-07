@@ -7,8 +7,6 @@
 #include <string>
 
 #include <QCoreApplication>
-#include <QDebug>
-
 
 
 int main(int argc, char **argv) {
@@ -38,5 +36,5 @@ int main(int argc, char **argv) {
         std::cerr << "[err]: no arguments" << std::endl;
     }
 
-    return 0;//a.exec();
+    return 0;
 }

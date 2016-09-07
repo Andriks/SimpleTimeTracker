@@ -18,5 +18,5 @@ and
 ./run.sh stop
 
 For getting report use:
-./run.sh report -d <DAY>
-./run.sh report -i <DAY1> <DAY2>
+./run.sh report -d | --day <DAY>
+./run.sh report -i | --interval <DAY1> <DAY2>
