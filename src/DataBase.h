@@ -18,6 +18,7 @@ public:
 
     void write(AppInfo newApp) override;
     StrVector getListOfAppByDay(const std::string& day) override;
+    float getAppTimeByDay(const std::string& appName, const std::string& day) override;
 
 private:
     void updateDBDoc();

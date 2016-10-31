@@ -32,7 +32,8 @@ void Reporter::makeDayReport(const std::string& day) {
     auto appList = DataBase::Get().getListOfAppByDay(day);
 
     for (auto app : appList) {
-        std::cout << app << std::endl;
+        float duration = DataBase::Get().getAppTimeByDay(app, day);
+        std::cout << "[" << duration << "] " << app << std::endl;
     }
 }
 

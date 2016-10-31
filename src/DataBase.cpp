@@ -46,16 +46,45 @@ StrVector DataBase::getListOfAppByDay(const std::string& day) {
     if (query.isValid()) {
         QXmlResultItems xmlResult;
         query.evaluateTo(&xmlResult);
-        QXmlItem XmlItem(xmlResult.next());
+        QXmlItem xmlItem(xmlResult.next());
 
-        while (!XmlItem.isNull()) {
-            if (XmlItem.isAtomicValue()) {
-                QString name = XmlItem.toAtomicValue().toString();
+        while (!xmlItem.isNull()) {
+            if (xmlItem.isAtomicValue()) {
+                QString name = xmlItem.toAtomicValue().toString();
                 result.push_back(name.toStdString());
             }
 
-            values.append(XmlItem.toAtomicValue().toString());
-            XmlItem = xmlResult.next();
+            values.append(xmlItem.toAtomicValue().toString());
+            xmlItem = xmlResult.next();
+        }
+    }
+
+    return result;
+}
+
+float DataBase::getAppTimeByDay(const std::string& appName, const std::string& day) {
+    float result = -1;
+    std::string filename = makeFilename(day);
+    if (!fileExists(filename)) {
+        std::cout << "[err] file " << filename << " do not exists" << std::endl;
+        return result;
+    }
+
+    QFile file(filename.c_str());
+    file.open(QFile::ReadOnly);
+
+    QXmlQuery query;
+    query.setFocus(&file);
+    query.bindVariable( "appName", QVariant(appName.c_str()) );
+    query.setQuery("sum(//Root/Application[Name=$appName]/Duration)");
+
+    if (query.isValid()) {
+        QXmlResultItems xmlResult;
+        query.evaluateTo(&xmlResult);
+        QXmlItem xmlItem(xmlResult.next());
+
+        if (!xmlItem.isNull()) {
+            result = xmlItem.toAtomicValue().toFloat();
         }
     }
 
