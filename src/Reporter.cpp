@@ -5,6 +5,8 @@
 
 #include <iostream>
 #include <vector>
+#include <utility>
+#include <algorithm>
 
 
 bool Reporter::checkRequest(const std::string& request) const {
@@ -29,15 +31,46 @@ void Reporter::doReport(const std::string& request) {
 }
 
 void Reporter::makeDayReport(const std::string& day) {
-    auto appList = DataBase::Get().getListOfAppByDay(day);
+    float totalTime = 0;
+    std::vector<ItemType> appAndTimeVec;
 
+    auto appList = DataBase::Get().getListOfAppByDay(day);
     for (auto app : appList) {
         float duration = DataBase::Get().getAppTimeByDay(app, day);
-        std::cout << "[" << duration << "] " << app << std::endl;
+        ItemType item(app, duration);
+        appAndTimeVec.push_back(item);
+
+        totalTime += duration;
     }
+
+    std::sort(appAndTimeVec.begin(), appAndTimeVec.end(),
+        [](const ItemType &left, const ItemType &right) {
+            return left.second > right.second;
+        });
+
+    printReport(appAndTimeVec, totalTime);
 }
 
 void Reporter::makeIntervalReport(const std::string& dayBeg, const std::string& dayEnd) {
     // TODO: implement it
     std::cout << "not implemented" << std::endl;
+}
+
+void Reporter::printReport(const std::vector<ItemType>& vec, const float inputTotalTime) const {
+    float totalTime = inputTotalTime;
+    if (totalTime == 0) {
+        for (auto item : vec) {
+            totalTime += item.second;
+        }
+    }
+
+    float totalPercents = 0;
+    for (auto item: vec) {
+        float percents = item.second/totalTime*100;
+        totalPercents += percents;
+        std::cout << "[" << percents << "% | " << item.second/60 << "m | " << item.second << "s] "
+                  << item.first << std::endl;
+    }
+
+    std::cout << "[" << totalPercents << "% | " << totalTime/60 << "m | " << totalTime << "s]" << std::endl;
 }
