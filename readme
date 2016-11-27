@@ -4,10 +4,12 @@ Program was developed to help you to contol where your time was spended.
 It will automaticaly collect information about applications which you working with and time you spent there.
 
 Requirements:
-1. tinyxml install
+1. tinyxml
    sudo apt-get install libtinyxml-dev
-2. Qt5 framework install
-   sudo apt-get install qt5-default
+2. Qt4 framework
+   sudo apt-get install libqt4-dev
+3. xdotool
+	sudo apt-get install xdotool
 
 USAGE:
 At this time you can use run.sh

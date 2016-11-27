@@ -1,3 +1,4 @@
+#!/bin/bash
 
 USAGE=(
     "USAGE: run.sh (start | stop | report <SomeQuery> | help)",
@@ -7,7 +8,7 @@ USAGE=(
     "       help   - will print valid cmd list",
 )
 
-if [ "$1" = "-h" -o "$1" = "help" ]; then
+if [[ "$1" = "-h" || "$1" = "help" || $# < 1 ]]; then
     printf '%s\n' "${USAGE[@]}"
     exit
 fi
