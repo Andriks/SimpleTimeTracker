@@ -102,33 +102,53 @@ void DataBase::updateDBDoc() {
     std::strftime(buffer,80,"%Y_%m_%d",timeinfo);
     std::string day = buffer;
     std::string filename = makeFilename(day);
+    QString qfilename = filename.c_str();
 
-    std::ifstream infile(filename);
-    if (!infile.good()) {
-        mDBDocName = day;
+    if (!fileExists(filename)) {
 
-        TiXmlDeclaration* decl = new TiXmlDeclaration( "1.0", "", "" );
-        TiXmlElement* root = new TiXmlElement( "Root" );
-        root->SetAttribute("day", mDBDocName);
-
-        mDBDoc.LinkEndChild(decl);
-        mDBDoc.LinkEndChild(root);
-
-        mDBDoc.SaveFile(filename);
-    } else if (day != mDBDocName) {
-        if (!mDBDoc.LoadFile(filename)) {
-            std::cerr << "can't load " << filename << std::endl;
+        QFile outFile(qfilename);
+        if (!outFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            qDebug( "Failed to open file for writing." );
+            return;
         }
         mDBDocName = day;
+
+        QDomProcessingInstruction decl =
+            mDBDoc.createProcessingInstruction("xml", "version=\"1.0\"");
+        mDBDoc.appendChild(decl);
+
+        QDomElement root = mDBDoc.createElement("Root");
+        root.setAttribute("day", QString(mDBDocName.c_str()));
+        mDBDoc.appendChild(root);
+
+        QTextStream stream(&outFile);
+        stream << mDBDoc.toString();
+        outFile.close();
+    } else if (day != mDBDocName) {
+        QFile inFile(qfilename);
+        if (!inFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            qDebug() << "Failed to open file for reading. " << qfilename;
+            return;
+        }
+
+        if (!mDBDoc.setContent(&inFile)) {
+            qDebug( "Failed to parse the file into a DOM tree." );
+            inFile.close();
+            return;
+        }
+        inFile.close();
+
+        mDBDocName = day;
     }
+
 }
 
 void DataBase::writeToXML(AppInfo newApp)
 {
     updateDBDoc();
 
-    TiXmlElement* node = new TiXmlElement("Application");
-    node->SetAttribute("pid", newApp.pid);
+    QDomElement node = mDBDoc.createElement("Application");
+    node.setAttribute("pid", newApp.pid.c_str());
 
     appendSimpleNode(node, "Name", newApp.name);
     appendSimpleNode(node, "Title", newApp.title);
@@ -136,16 +156,25 @@ void DataBase::writeToXML(AppInfo newApp)
 
     appendSimpleNode(node, "TimeStarted", std::to_string(newApp.timeStarted.toLong()));
 
-    TiXmlElement* root = mDBDoc.FirstChildElement();
-    root->LinkEndChild(node);
-    mDBDoc.SaveFile(makeFilename(mDBDocName));
+    QDomElement root = mDBDoc.documentElement();
+    root.appendChild(node);
+
+    QFile outFile( makeFilename(mDBDocName).c_str() );
+    if(!outFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "Failed to open file for writing.";
+        return;
+    }
+    QTextStream stream( &outFile );
+    stream << mDBDoc.toString();
+    outFile.close();
 }
 
-void DataBase::appendSimpleNode(TiXmlElement* parent, std::string name, std::string text) const {
-    TiXmlElement* node = new TiXmlElement(name);
-    TiXmlText* nodeText = new TiXmlText(text);
-    node->LinkEndChild(nodeText);
-    parent->LinkEndChild(node);
+void DataBase::appendSimpleNode(QDomElement& parent, std::string name, std::string text) const {
+    QDomElement node = mDBDoc.createElement( QString(name.c_str()) );
+    QDomText nodeText = mDBDoc.createTextNode( QString(text.c_str()) );
+    node.appendChild(nodeText);
+    parent.appendChild(node);
+
 }
 
 std::string DataBase::makeFilename(const std::string& day) {

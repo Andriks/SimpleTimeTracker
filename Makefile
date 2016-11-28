@@ -4,7 +4,7 @@ CXX = g++
 CPP_FLAGS += -g -O0 -pthread -std=c++11 -fPIC
 CPP_FLAGS += -fpermissive
 # CPP_FLAGS += -Wall
-LIBS = -lX11 -ltinyxml -lQtCore -lQtXml -lQtXmlPatterns
+LIBS = -lX11 -lQtCore -lQtXml -lQtXmlPatterns
 
 OBJ_DIR = obj
 BIN_DIR = bin

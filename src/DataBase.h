@@ -2,7 +2,8 @@
 #include "IDataBase.h"
 
 #include <memory>
-#include <tinyxml.h>
+#include <QDomDocument>
+#include <QDomElement>
 
 class DataBase: public IDataBase
 {
@@ -23,14 +24,14 @@ public:
 private:
     void updateDBDoc();
     void writeToXML(AppInfo newApp);
-    void appendSimpleNode(TiXmlElement* parent, std::string name, std::string text) const;
+    void appendSimpleNode(QDomElement& parent, std::string name, std::string text) const;
 
     // makes filename as './some/path/2000_01_01.xml' from day as '2000_01_01'
     std::string makeFilename(const std::string& day);
     bool fileExists(const std::string& path);
 
 private:
-    TiXmlDocument mDBDoc;
+    QDomDocument mDBDoc;
     std::string mDBDocName = "";
 
 };
