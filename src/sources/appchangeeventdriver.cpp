@@ -20,7 +20,7 @@ void AppChangeEventDriver::start() {
     while (isRunning()) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
-        std::string pid = exec_cmd("xdotool getactivewindow getwindowpid");
+        QString pid = exec_cmd("xdotool getactivewindow getwindowpid");
         if (mLastApp.pid != pid) {
             forceSendChangeEvent();
         }
@@ -50,14 +50,14 @@ void AppChangeEventDriver::sendChangeEvent(AppInfo newApp) {
     SignalHandler::Get().sendChangeAppEvent(newApp);
 }
 
-std::string AppChangeEventDriver::exec_cmd(char* cmd) {
+QString AppChangeEventDriver::exec_cmd(char* cmd) {
     FILE* pipe = popen(cmd, "r");
     if (!pipe) {
         return "ERROR\n";
     }
 
     char buffer[128];
-    std::string result = "";
+    QString result = "";
     while (!feof(pipe)) {
         if (fgets(buffer, 128, pipe) != nullptr) {
             result += buffer;
@@ -66,16 +66,16 @@ std::string AppChangeEventDriver::exec_cmd(char* cmd) {
 
     pclose(pipe);
     // remove last symbol '\n' before return
-    return result.substr(0, result.size()-1);
+    return result.remove(result.size()-1, 1);
 }
 
 AppInfo AppChangeEventDriver::getCurrAppInfo() {
-    std::string pid = exec_cmd("xdotool getactivewindow getwindowpid");
+    QString pid = exec_cmd("xdotool getactivewindow getwindowpid");
 
-    std::string name_request = "ps -p " + pid + " -o comm=";
-    std::string name = exec_cmd(name_request.c_str());
+    QString name_request = "ps -p " + pid + " -o comm=";
+    QString name = exec_cmd(name_request.toStdString().c_str());
 
-    std::string title = exec_cmd("xdotool getwindowfocus getwindowname");
+    QString title = exec_cmd("xdotool getwindowfocus getwindowname");
     auto timeStarted = std::chrono::system_clock::now();
 
     AppInfo result;

@@ -2,7 +2,7 @@
 #include "signalhandler.h"
 #include "database.h"
 
-#include <iostream>
+#include <QDebug>
 
 SignalHandler::SignalHandler() {}
 
@@ -12,6 +12,6 @@ ISignalHandler& SignalHandler::Get() {
 }
 
 void SignalHandler::sendChangeAppEvent(AppInfo newApp) {
-    std::cout << "[pid:" << newApp.pid << "] --> " << newApp.name << std::endl;
+    qDebug() << "[pid:" << newApp.pid << "] --> " << newApp.name;
     DataBase::Get().write(newApp);
 }

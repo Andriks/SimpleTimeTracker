@@ -34,9 +34,9 @@ void Reporter::makeDayReport(const std::string& day) {
     float totalTime = 0;
     std::vector<ItemType> appAndTimeVec;
 
-    auto appList = DataBase::Get().getListOfAppByDay(day);
+    auto appList = DataBase::Get().getListOfAppByDay(day.c_str());
     for (auto app : appList) {
-        float duration = DataBase::Get().getAppTimeByDay(app, day);
+        float duration = DataBase::Get().getAppTimeByDay(app.c_str(), day.c_str());
         ItemType item(app, duration);
         appAndTimeVec.push_back(item);
 

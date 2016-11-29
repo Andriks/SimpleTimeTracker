@@ -14,6 +14,8 @@
 #include <QFile>
 #include <QFileInfo>
 
+#include <QDebug>
+
 
 DataBase::DataBase() {}
 
@@ -22,20 +24,20 @@ IDataBase& DataBase::Get() {
     return OnlyOne;
 }
 
-void DataBase::write(AppInfo newApp) {
+void DataBase::write(const AppInfo &newApp) {
     writeToXML(newApp);
 }
 
-StrVector DataBase::getListOfAppByDay(const std::string& day) {
+StrVector DataBase::getListOfAppByDay(const QString &day) {
     StrVector result;
 
-    std::string filename = makeFilename(day);
+    QString filename = makeFilename(day);
     if (!fileExists(filename)) {
-        std::cout << "[err] file " << filename << " do not exists" << std::endl;
+        qDebug() << "[err] file " << filename << " do not exists";
         return result;
     }
 
-    QFile file(filename.c_str());
+    QFile file(filename);
     file.open(QFile::ReadOnly);
 
     QXmlQuery query;
@@ -62,20 +64,20 @@ StrVector DataBase::getListOfAppByDay(const std::string& day) {
     return result;
 }
 
-float DataBase::getAppTimeByDay(const std::string& appName, const std::string& day) {
+float DataBase::getAppTimeByDay(const QString &appName, const QString &day) {
     float result = -1;
-    std::string filename = makeFilename(day);
+    QString filename = makeFilename(day);
     if (!fileExists(filename)) {
-        std::cout << "[err] file " << filename << " do not exists" << std::endl;
+        qDebug() << "[err] file " << filename << " do not exists";
         return result;
     }
 
-    QFile file(filename.c_str());
+    QFile file(filename);
     file.open(QFile::ReadOnly);
 
     QXmlQuery query;
     query.setFocus(&file);
-    query.bindVariable( "appName", QVariant(appName.c_str()) );
+    query.bindVariable("appName", QVariant(appName));
     query.setQuery("sum(//Root/Application[Name=$appName]/Duration)");
 
     if (query.isValid()) {
@@ -98,17 +100,15 @@ void DataBase::updateDBDoc() {
 
     std::time(&rawtime);
     timeinfo = std::localtime(&rawtime);
+    std::strftime(buffer, 80, "%Y_%m_%d", timeinfo);
 
-    std::strftime(buffer,80,"%Y_%m_%d",timeinfo);
-    std::string day = buffer;
-    std::string filename = makeFilename(day);
-    QString qfilename = filename.c_str();
+    QString day = buffer;
+    QString filename = makeFilename(day);
 
     if (!fileExists(filename)) {
-
-        QFile outFile(qfilename);
+        QFile outFile(filename);
         if (!outFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-            qDebug( "Failed to open file for writing." );
+            qDebug() << "Failed to open file for writing.";
             return;
         }
         mDBDocName = day;
@@ -118,48 +118,46 @@ void DataBase::updateDBDoc() {
         mDBDoc.appendChild(decl);
 
         QDomElement root = mDBDoc.createElement("Root");
-        root.setAttribute("day", QString(mDBDocName.c_str()));
+        root.setAttribute("day", QString(mDBDocName));
         mDBDoc.appendChild(root);
 
         QTextStream stream(&outFile);
         stream << mDBDoc.toString();
         outFile.close();
     } else if (day != mDBDocName) {
-        QFile inFile(qfilename);
+        QFile inFile(filename);
         if (!inFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            qDebug() << "Failed to open file for reading. " << qfilename;
+            qDebug() << "Failed to open file for reading. " << filename;
             return;
         }
 
         if (!mDBDoc.setContent(&inFile)) {
-            qDebug( "Failed to parse the file into a DOM tree." );
+            qDebug() << "Failed to parse the file into a DOM tree.";
             inFile.close();
             return;
         }
         inFile.close();
-
         mDBDocName = day;
     }
 
 }
 
-void DataBase::writeToXML(AppInfo newApp)
-{
+void DataBase::writeToXML(const AppInfo &newApp) {
     updateDBDoc();
 
     QDomElement node = mDBDoc.createElement("Application");
-    node.setAttribute("pid", newApp.pid.c_str());
+    node.setAttribute("pid", newApp.pid);
 
     appendSimpleNode(node, "Name", newApp.name);
     appendSimpleNode(node, "Title", newApp.title);
-    appendSimpleNode(node, "Duration", std::to_string(newApp.duration));
+    appendSimpleNode(node, "Duration", QString::number(newApp.duration));
 
-    appendSimpleNode(node, "TimeStarted", std::to_string(newApp.timeStarted.toLong()));
+    appendSimpleNode(node, "TimeStarted", QString::number(newApp.timeStarted.toLong()));
 
     QDomElement root = mDBDoc.documentElement();
     root.appendChild(node);
 
-    QFile outFile( makeFilename(mDBDocName).c_str() );
+    QFile outFile( makeFilename(mDBDocName) );
     if(!outFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
         qDebug() << "Failed to open file for writing.";
         return;
@@ -169,19 +167,19 @@ void DataBase::writeToXML(AppInfo newApp)
     outFile.close();
 }
 
-void DataBase::appendSimpleNode(QDomElement& parent, std::string name, std::string text) const {
-    QDomElement node = mDBDoc.createElement( QString(name.c_str()) );
-    QDomText nodeText = mDBDoc.createTextNode( QString(text.c_str()) );
+void DataBase::appendSimpleNode(QDomElement &parent, const QString &name, const QString &text) const {
+    QDomElement node = mDBDoc.createElement(name);
+    QDomText nodeText = mDBDoc.createTextNode(text);
     node.appendChild(nodeText);
     parent.appendChild(node);
 
 }
 
-std::string DataBase::makeFilename(const std::string& day) {
+QString DataBase::makeFilename(const QString& day) {
     return "./data/" + day + ".xml";
 }
 
-bool DataBase::fileExists(const std::string& path) {
-    QFileInfo checkFile(path.c_str());
+bool DataBase::fileExists(const QString& path) {
+    QFileInfo checkFile(path);
     return checkFile.exists() && checkFile.isFile();
 }

@@ -7,14 +7,16 @@
 #include <string>
 #include <iostream>
 
+#include <QString>
+
 typedef std::vector<std::string> StrVector;
 
 class AppInfo
 {
 public:
-    std::string pid;
-    std::string name;
-    std::string title;
+    QString pid;
+    QString name;
+    QString title;
     TimeInfo timeStarted;
     float duration;
 };

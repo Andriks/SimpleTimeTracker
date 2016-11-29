@@ -17,21 +17,21 @@ private:
 public:
     static IDataBase& Get();
 
-    void write(AppInfo newApp) override;
-    StrVector getListOfAppByDay(const std::string& day) override;
-    float getAppTimeByDay(const std::string& appName, const std::string& day) override;
+    void write(const AppInfo &newApp) override;
+    StrVector getListOfAppByDay(const QString &day) override;
+    float getAppTimeByDay(const QString &appName, const QString &day) override;
 
 private:
     void updateDBDoc();
-    void writeToXML(AppInfo newApp);
-    void appendSimpleNode(QDomElement& parent, std::string name, std::string text) const;
+    void writeToXML(const AppInfo &newApp);
+    void appendSimpleNode(QDomElement& parent, const QString &name, const QString &text) const;
 
     // makes filename as './some/path/2000_01_01.xml' from day as '2000_01_01'
-    std::string makeFilename(const std::string& day);
-    bool fileExists(const std::string& path);
+    QString makeFilename(const QString &day);
+    bool fileExists(const QString &path);
 
 private:
     QDomDocument mDBDoc;
-    std::string mDBDocName = "";
+    QString mDBDocName = "";
 
 };

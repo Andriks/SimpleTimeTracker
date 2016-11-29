@@ -18,7 +18,7 @@ protected:
     virtual void sendChangeEvent(AppInfo newApp);
 
 private:
-    std::string exec_cmd(char* cmd);
+    QString exec_cmd(char* cmd);
     AppInfo getCurrAppInfo();
 
 private:
