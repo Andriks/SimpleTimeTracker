@@ -1,4 +1,4 @@
-#include "TimeInfo.h"
+#include "timeinfo.h"
 
 #include <iostream>
 

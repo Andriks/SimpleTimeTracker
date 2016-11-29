@@ -1,6 +1,6 @@
 
-#include "SignalHandler.h"
-#include "DataBase.h"
+#include "signalhandler.h"
+#include "database.h"
 
 #include <iostream>
 

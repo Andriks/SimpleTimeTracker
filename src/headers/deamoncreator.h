@@ -1,8 +1,8 @@
 
 #pragma once
 
-#include "IServer.h"
-#include "AppChangeEventDriver.h"
+#include "Iserver.h"
+#include "appchangeeventdriver.h"
 #include "stt_algorithm.h"
 
 #include <string>

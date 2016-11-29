@@ -1,6 +1,6 @@
 
-#include "ISignalHandler.h"
-#include "CommonTypes.h"
+#include "Isignalhandler.h"
+#include "commontypes.h"
 
 class SignalHandler: public ISignalHandler
 {

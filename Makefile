@@ -1,4 +1,4 @@
-
+# created be ashcherba
 
 CXX = g++
 CPP_FLAGS += -g -O0 -pthread -std=c++11 -fPIC
@@ -8,8 +8,8 @@ LIBS = -lX11 -lQtCore -lQtXml -lQtXmlPatterns
 
 OBJ_DIR = obj
 BIN_DIR = bin
-HEADER_DIR = include
-SRC_DIR = src
+HEADER_DIR = src/headers
+SRC_DIR = src/sources
 
 INC_PATH = \
 	-I/usr/include/qt4 \
@@ -22,12 +22,12 @@ INC_PATH = \
 
 SRC_CPP = \
 	main.cpp \
-	DeamonCreator.cpp \
-	AppChangeEventDriver.cpp \
-	SignalHandler.cpp \
-	DataBase.cpp \
-	TimeInfo.cpp \
-	Reporter.cpp \
+	deamoncreator.cpp \
+	appchangeeventdriver.cpp \
+	signalhandler.cpp \
+	database.cpp \
+	timeinfo.cpp \
+	reporter.cpp \
 	stt_algorithm.cpp \
 	$(NULL)
 

@@ -1,5 +1,5 @@
 
-#include "DeamonCreator.h"
+#include "deamoncreator.h"
 
 #include <iostream>
 #include <fstream>

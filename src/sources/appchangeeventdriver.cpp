@@ -1,5 +1,5 @@
-#include "AppChangeEventDriver.h"
-#include "SignalHandler.h"
+#include "appchangeeventdriver.h"
+#include "signalhandler.h"
 
 #include <stdio.h>
 #include <thread>

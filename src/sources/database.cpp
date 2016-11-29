@@ -1,5 +1,5 @@
 
-#include "DataBase.h"
+#include "database.h"
 
 #include <iostream>
 #include <fstream>

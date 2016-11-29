@@ -1,6 +1,6 @@
 
-#include "Reporter.h"
-#include "DataBase.h"
+#include "reporter.h"
+#include "database.h"
 #include "stt_algorithm.h"
 
 #include <iostream>

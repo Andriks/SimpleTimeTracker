@@ -1,13 +1,12 @@
 
-#include "DeamonCreator.h"
-#include "Reporter.h"
+#include "deamoncreator.h"
+#include "reporter.h"
 
 #include <iostream>
 #include <vector>
 #include <string>
 
 #include <QCoreApplication>
-
 
 int main(int argc, char **argv) {
     QCoreApplication a(argc, argv);

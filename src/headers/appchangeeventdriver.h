@@ -1,8 +1,8 @@
 
 #pragma once
 
-#include "IServer.h"
-#include "CommonTypes.h"
+#include "Iserver.h"
+#include "commontypes.h"
 
 #include <string>
 
