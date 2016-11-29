@@ -13,3 +13,6 @@ bin/*
 
 # ignore for tmp dir data/
 data/*
+
+# ignore user config for qt proj
+*.user
