@@ -13,4 +13,5 @@ if [[ "$1" = "-h" || "$1" = "help" || $# < 1 ]]; then
     exit
 fi
 
-./bin/simpleTimeTrackerEXE $@
+mkdir -p ./data
+./bin/STT $@

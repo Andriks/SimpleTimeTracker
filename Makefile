@@ -1,4 +1,4 @@
-# created be ashcherba
+# created by ashcherba
 
 CXX = g++
 CPP_FLAGS += -g -O0 -pthread -std=c++11 -fPIC
@@ -37,10 +37,10 @@ OBJ += $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SRC_CPP))
 
 all: build
 
-build: mkdir simpleTimeTrackerEXE
+build: mkdir STT
 
 run: build
-	$(BIN_DIR)/simpleTimeTrackerEXE
+	$(BIN_DIR)/STT
 
 mkdir:
 	@mkdir -p $(OBJ_DIR)
@@ -49,7 +49,7 @@ mkdir:
 clean: 
 	rm -rf $(OBJ_DIR) $(BIN_DIR)
 
-simpleTimeTrackerEXE: $(OBJ)
+STT: $(OBJ)
 	$(CXX) $(CPP_FLAGS) -o $(BIN_DIR)/$@ $^ $(LIBS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
