@@ -6,6 +6,12 @@
 
 #include <QDebug>
 
+const char *Reporter::RED   = "\033[031m";
+const char *Reporter::GREEN = "\033[032m";
+const char *Reporter::ORANGE= "\033[033m";
+const char *Reporter::BLUE  = "\033[034m";
+const char *Reporter::AUTO  = "\033[0m";
+
 bool Reporter::checkRequest(const QString &request) const {
     // TODO: implement it
     Q_UNUSED(request)
@@ -68,9 +74,23 @@ void Reporter::printReport(const QVector<ItemType> &vec, const float inputTotalT
     for (auto item: vec) {
         float percents = item.second/totalTime*100;
         totalPercents += percents;
-        qDebug() << "[" << percents << "% | " << item.second/60 << "m | " << item.second << "s] "
-                  << item.first;
+        qDebug() << getColor(percents) << "[" << percents << "% | " << item.second/60 << "m | " << item.second << "s] "
+                 << item.first << AUTO;
     }
 
-    qDebug() << "[" << totalPercents << "% | " << totalTime/60 << "m | " << totalTime << "s]";
+    qDebug() << RED << "[" << totalPercents << "% | " << totalTime/60 << "m | " << totalTime << "s]" << AUTO;
+}
+
+const char *Reporter::getColor(const float persent) const
+{
+    const char *result = NULL;
+    if (persent > 15) {
+        result = GREEN;
+    } else if (persent > 10) {
+        result = BLUE;
+    } else {
+        result = ORANGE;
+    }
+
+    return result;
 }
