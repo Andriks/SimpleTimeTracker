@@ -1,11 +1,6 @@
 
 #include "database.h"
 
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <ctime>
-
 #include <QtXml>
 #include <QXmlQuery>
 #include <QXmlResultItems>
@@ -13,6 +8,7 @@
 #include <QString>
 #include <QFile>
 #include <QFileInfo>
+#include <QDateTime>
 
 #include <QDebug>
 
@@ -94,15 +90,8 @@ float DataBase::getAppTimeByDay(const QString &appName, const QString &day) {
 }
 
 void DataBase::updateDBDoc() {
-    std::time_t rawtime;
-    std::tm* timeinfo;
-    char buffer [80];
-
-    std::time(&rawtime);
-    timeinfo = std::localtime(&rawtime);
-    std::strftime(buffer, 80, "%Y_%m_%d", timeinfo);
-
-    QString day = buffer;
+    QDateTime now = QDateTime::currentDateTime();
+    QString day = now.toString("yyyy_MM_dd");
     QString filename = makeFilename(day);
 
     if (!fileExists(filename)) {
@@ -151,8 +140,7 @@ void DataBase::writeToXML(const AppInfo &newApp) {
     appendSimpleNode(node, "Name", newApp.name);
     appendSimpleNode(node, "Title", newApp.title);
     appendSimpleNode(node, "Duration", QString::number(newApp.duration));
-
-    appendSimpleNode(node, "TimeStarted", QString::number(newApp.timeStarted.toLong()));
+    appendSimpleNode(node, "TimeStarted", QString::number(newApp.timeStarted.toMSecsSinceEpoch()));
 
     QDomElement root = mDBDoc.documentElement();
     root.appendChild(node);

@@ -8,7 +8,6 @@ src/headers/Isignalhandler.h
 src/headers/reporter.h
 src/headers/signalhandler.h
 src/headers/stt_algorithm.h
-src/headers/timeinfo.h
 src/sources/appchangeeventdriver.cpp
 src/sources/database.cpp
 src/sources/deamoncreator.cpp
@@ -16,7 +15,6 @@ src/sources/main.cpp
 src/sources/reporter.cpp
 src/sources/signalhandler.cpp
 src/sources/stt_algorithm.cpp
-src/sources/timeinfo.cpp
 Makefile
 readme
 run.sh

@@ -26,7 +26,6 @@ SRC_CPP = \
 	appchangeeventdriver.cpp \
 	signalhandler.cpp \
 	database.cpp \
-	timeinfo.cpp \
 	reporter.cpp \
 	stt_algorithm.cpp \
 	$(NULL)

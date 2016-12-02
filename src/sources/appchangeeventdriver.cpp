@@ -39,9 +39,9 @@ bool AppChangeEventDriver::isRunning() {
 }
 
 void AppChangeEventDriver::forceSendChangeEvent() {
-    std::chrono::duration<float> fsec = std::chrono::system_clock::now() - mLastApp.timeStarted.toTimePoint();
-    mLastApp.duration = fsec.count();
-    
+    mLastApp.duration = QDateTime::currentMSecsSinceEpoch() - mLastApp.timeStarted.toMSecsSinceEpoch();
+    mLastApp.duration /= 1000; // msec -> sec
+
     sendChangeEvent(mLastApp);
     mLastApp = getCurrAppInfo();
 }
@@ -71,18 +71,9 @@ QString AppChangeEventDriver::exec_cmd(char* cmd) {
 
 AppInfo AppChangeEventDriver::getCurrAppInfo() {
     QString pid = exec_cmd("xdotool getactivewindow getwindowpid");
-
     QString name_request = "ps -p " + pid + " -o comm=";
     QString name = exec_cmd(name_request.toStdString().c_str());
-
     QString title = exec_cmd("xdotool getwindowfocus getwindowname");
-    auto timeStarted = std::chrono::system_clock::now();
 
-    AppInfo result;
-    result.pid = pid;
-    result.name = name;
-    result.title = title;
-    result.timeStarted.init(timeStarted);
-
-    return result;
+    return AppInfo(pid, name, title, QDateTime::currentDateTime());
 }
