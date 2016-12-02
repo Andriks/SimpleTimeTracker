@@ -1,7 +1,6 @@
 
 #include "Idatabase.h"
 
-#include <memory>
 #include <QDomDocument>
 #include <QDomElement>
 
@@ -26,7 +25,7 @@ private:
     void writeToXML(const AppInfo &newApp);
     void appendSimpleNode(QDomElement& parent, const QString &name, const QString &text) const;
 
-    // makes filename as './some/path/2000_01_01.xml' from day as '2000_01_01'
+    // makes filename as './some/path/20160101.xml' from day as '20160101'
     QString makeFilename(const QString &day);
     bool fileExists(const QString &path);
 

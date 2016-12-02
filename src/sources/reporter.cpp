@@ -1,42 +1,40 @@
 
 #include "reporter.h"
 #include "database.h"
-#include "stt_algorithm.h"
 
-#include <iostream>
-#include <vector>
-#include <utility>
 #include <algorithm>
 
+#include <QDebug>
 
-bool Reporter::checkRequest(const std::string& request) const {
+bool Reporter::checkRequest(const QString &request) const {
     // TODO: implement it
+    Q_UNUSED(request)
     return true;
 }
 
-void Reporter::doReport(const std::string& request) {
+void Reporter::doReport(const QString& request) {
     if (!checkRequest(request)) {
-        std::cout << "[err] Bad request" << std::endl;
+        qDebug() << "[err] Bad request";
         return;
     }
 
-    auto requestVec = algo::split(request);
+    QStringList requestVec = request.split(" ", QString::SkipEmptyParts);
     if (requestVec[0] == "-d" || requestVec[0] == "--day") {
         makeDayReport(requestVec[1]);
     } else if (requestVec[0] == "-i" || requestVec[0] == "--interval") {
         makeIntervalReport(requestVec[1], requestVec[2]);
     } else {
-        std::cout << "unknown command " << requestVec[0] << std::endl;
+        qDebug() << "unknown command " << requestVec[0];
     }
 }
 
-void Reporter::makeDayReport(const std::string& day) {
+void Reporter::makeDayReport(const QString &day) {
     float totalTime = 0;
-    std::vector<ItemType> appAndTimeVec;
+    QVector<ItemType> appAndTimeVec;
 
-    auto appList = DataBase::Get().getListOfAppByDay(day.c_str());
+    auto appList = DataBase::Get().getListOfAppByDay(day);
     for (auto app : appList) {
-        float duration = DataBase::Get().getAppTimeByDay(app.c_str(), day.c_str());
+        float duration = DataBase::Get().getAppTimeByDay(app, day);
         ItemType item(app, duration);
         appAndTimeVec.push_back(item);
 
@@ -51,12 +49,14 @@ void Reporter::makeDayReport(const std::string& day) {
     printReport(appAndTimeVec, totalTime);
 }
 
-void Reporter::makeIntervalReport(const std::string& dayBeg, const std::string& dayEnd) {
+void Reporter::makeIntervalReport(const QString &dayBeg, const QString &dayEnd) {
     // TODO: implement it
-    std::cout << "not implemented" << std::endl;
+    Q_UNUSED(dayBeg)
+    Q_UNUSED(dayEnd)
+    qDebug() << "not implemented";
 }
 
-void Reporter::printReport(const std::vector<ItemType>& vec, const float inputTotalTime) const {
+void Reporter::printReport(const QVector<ItemType> &vec, const float inputTotalTime) const {
     float totalTime = inputTotalTime;
     if (totalTime == 0) {
         for (auto item : vec) {
@@ -68,9 +68,9 @@ void Reporter::printReport(const std::vector<ItemType>& vec, const float inputTo
     for (auto item: vec) {
         float percents = item.second/totalTime*100;
         totalPercents += percents;
-        std::cout << "[" << percents << "% | " << item.second/60 << "m | " << item.second << "s] "
-                  << item.first << std::endl;
+        qDebug() << "[" << percents << "% | " << item.second/60 << "m | " << item.second << "s] "
+                  << item.first;
     }
 
-    std::cout << "[" << totalPercents << "% | " << totalTime/60 << "m | " << totalTime << "s]" << std::endl;
+    qDebug() << "[" << totalPercents << "% | " << totalTime/60 << "m | " << totalTime << "s]";
 }

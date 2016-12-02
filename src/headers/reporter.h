@@ -3,19 +3,21 @@
 
 #include "commontypes.h"
 
-#include <string>
+#include <QString>
+#include <QVector>
+#include <QPair>
 
 class Reporter
 {
-    typedef std::pair<std::string, float> ItemType;
+    typedef QPair<QString, float> ItemType;
 
 public:
-    bool checkRequest(const std::string& request) const;
-    void doReport(const std::string& request);
+    bool checkRequest(const QString& request) const;
+    void doReport(const QString &request);
 
 private:
-    void makeDayReport(const std::string& day);
-    void makeIntervalReport(const std::string& dayBeg, const std::string& dayEnd);
-    void printReport(const std::vector<ItemType>& vec, const float inputTotalTime = 0) const;
+    void makeDayReport(const QString& day);
+    void makeIntervalReport(const QString& dayBeg, const QString& dayEnd);
+    void printReport(const QVector<ItemType>& vec, const float inputTotalTime = 0) const;
         
 };

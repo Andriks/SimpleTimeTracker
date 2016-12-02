@@ -49,7 +49,7 @@ StrVector DataBase::getListOfAppByDay(const QString &day) {
         while (!xmlItem.isNull()) {
             if (xmlItem.isAtomicValue()) {
                 QString name = xmlItem.toAtomicValue().toString();
-                result.push_back(name.toStdString());
+                result.append(name);
             }
 
             values.append(xmlItem.toAtomicValue().toString());
@@ -91,7 +91,7 @@ float DataBase::getAppTimeByDay(const QString &appName, const QString &day) {
 
 void DataBase::updateDBDoc() {
     QDateTime now = QDateTime::currentDateTime();
-    QString day = now.toString("yyyy_MM_dd");
+    QString day = now.toString("yyyyMMdd");
     QString filename = makeFilename(day);
 
     if (!fileExists(filename)) {

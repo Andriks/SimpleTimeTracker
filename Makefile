@@ -27,7 +27,6 @@ SRC_CPP = \
 	signalhandler.cpp \
 	database.cpp \
 	reporter.cpp \
-	stt_algorithm.cpp \
 	$(NULL)
 
 OBJ += $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SRC_CPP))

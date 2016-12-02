@@ -1,14 +1,13 @@
 
 #pragma once
 
-#include <vector>
-#include <string>
 #include <iostream>
 
 #include <QDateTime>
 #include <QString>
+#include <QStringList>
 
-typedef std::vector<std::string> StrVector;
+typedef QStringList StrVector;
 
 class AppInfo
 {

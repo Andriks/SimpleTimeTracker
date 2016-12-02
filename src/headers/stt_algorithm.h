@@ -14,7 +14,4 @@ std::unique_ptr<T> make_unique(Args&&... args) {
     return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
 }
 
-StrVector split(const std::string &str, const char delim = ' ');
-std::string join(const StrVector &strVec, const char delim = ' ');
-
 } //algo

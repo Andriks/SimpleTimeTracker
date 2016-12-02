@@ -2,23 +2,22 @@
 #include "deamoncreator.h"
 #include "reporter.h"
 
-#include <iostream>
-#include <vector>
-#include <string>
-
 #include <QCoreApplication>
+#include <QString>
+
+#include <QDebug>
 
 int main(int argc, char **argv) {
     QCoreApplication a(argc, argv);
 
     if (argc > 1) {
-        std::string cmd = argv[1];
+        QString cmd = argv[1];
         if (cmd == "start") {
             DeamonCreator::Get().start();
         } else if (cmd == "stop") {
             DeamonCreator::Get().stop();
         } else if (cmd == "report") {
-            std::string request;
+            QString request;
             for (int i = 2; i < argc; ++i) {
                 request += argv[i];
                 if (argc - i > 1) {
@@ -29,10 +28,10 @@ int main(int argc, char **argv) {
             Reporter reporter;
             reporter.doReport(request);
         } else {
-            std::cerr << "[err]: unknown command" << std::endl;
+            qDebug() << "[err]: unknown command";
         }
     } else {
-        std::cerr << "[err]: no arguments" << std::endl;
+        qDebug() << "[err]: no arguments";
     }
 
     return 0;

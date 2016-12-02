@@ -14,7 +14,6 @@ src/sources/deamoncreator.cpp
 src/sources/main.cpp
 src/sources/reporter.cpp
 src/sources/signalhandler.cpp
-src/sources/stt_algorithm.cpp
 Makefile
 readme
 run.sh
