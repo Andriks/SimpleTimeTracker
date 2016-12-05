@@ -2,10 +2,12 @@
 #pragma once
 
 #include <iostream>
+#include <QDebug>
 
 #include <QDateTime>
 #include <QString>
 #include <QStringList>
+
 
 typedef QStringList StrVector;
 

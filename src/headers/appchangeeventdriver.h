@@ -4,9 +4,11 @@
 #include "Iserver.h"
 #include "commontypes.h"
 
-
 class AppChangeEventDriver : public IServer
 {
+    static unsigned int AUTOSAVE_TIMEOUT_MS;
+    static unsigned int UPDATE_TIMEOUT_MS;
+
 public:
     void start() override;
     void stop() override;
@@ -19,9 +21,11 @@ protected:
 private:
     QString exec_cmd(char* cmd);
     AppInfo getCurrAppInfo();
+    unsigned int currTimeMs() const;
 
 private:
     bool mIsRunning = false;
     AppInfo mLastApp;
+    unsigned int mLastSave;
 
 };

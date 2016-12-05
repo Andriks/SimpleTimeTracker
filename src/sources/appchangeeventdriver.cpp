@@ -8,21 +8,27 @@
 #include <X11/Xlib.h>
 
 
+unsigned int AppChangeEventDriver::AUTOSAVE_TIMEOUT_MS = 5*1000*60; // 5min
+unsigned int AppChangeEventDriver::UPDATE_TIMEOUT_MS = 1000; // 1sec
+
 void AppChangeEventDriver::start() {
     if (isRunning()) {
         return;
     }
 
     mIsRunning = true;
+    mLastSave = currTimeMs();
     mLastApp = getCurrAppInfo();
 
     // run event loop
     while (isRunning()) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        std::this_thread::sleep_for(std::chrono::milliseconds(UPDATE_TIMEOUT_MS));
 
         QString pid = exec_cmd("xdotool getactivewindow getwindowpid");
         if (mLastApp.pid != pid) {
             forceSendChangeEvent();
+        } else if ( currTimeMs()-mLastSave > AUTOSAVE_TIMEOUT_MS ) {
+            forceSendChangeEvent(true);
         }
     }
 }
@@ -39,9 +45,10 @@ bool AppChangeEventDriver::isRunning() {
 }
 
 void AppChangeEventDriver::forceSendChangeEvent(bool autosave) {
-    mLastApp.duration = QDateTime::currentMSecsSinceEpoch() - mLastApp.timeStarted.toMSecsSinceEpoch();
+    mLastApp.duration = currTimeMs() - mLastApp.timeStarted.toMSecsSinceEpoch();
     mLastApp.duration /= 1000; // msec -> sec
 
+    mLastSave = currTimeMs();
     sendChangeEvent(mLastApp, autosave);
     mLastApp = getCurrAppInfo();
 }
@@ -76,4 +83,9 @@ AppInfo AppChangeEventDriver::getCurrAppInfo() {
     QString title = exec_cmd("xdotool getwindowfocus getwindowname");
 
     return AppInfo(pid, name, title, QDateTime::currentDateTime());
+}
+
+unsigned int AppChangeEventDriver::currTimeMs() const
+{
+    return QDateTime::currentMSecsSinceEpoch();
 }
