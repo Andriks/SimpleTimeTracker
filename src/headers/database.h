@@ -16,13 +16,13 @@ private:
 public:
     static IDataBase& Get();
 
-    void write(const AppInfo &newApp) override;
+    void write(const AppInfo &newApp, bool autosave) override;
     StrVector getListOfAppByDay(const QString &day) override;
     float getAppTimeByDay(const QString &appName, const QString &day) override;
 
 private:
     void updateDBDoc();
-    void writeToXML(const AppInfo &newApp);
+    void writeToXML(const AppInfo &newApp, bool autosave);
     void appendSimpleNode(QDomElement& parent, const QString &name, const QString &text) const;
 
     // makes filename as './some/path/20160101.xml' from day as '20160101'

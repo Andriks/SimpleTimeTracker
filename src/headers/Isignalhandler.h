@@ -7,5 +7,5 @@ class ISignalHandler
 {
 public:
     virtual ~ISignalHandler() {}
-    virtual void sendChangeAppEvent(AppInfo newApp) = 0;
+    virtual void sendChangeAppEvent(AppInfo newApp, bool autosave) = 0;
 };

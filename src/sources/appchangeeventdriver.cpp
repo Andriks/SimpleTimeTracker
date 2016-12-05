@@ -30,7 +30,7 @@ void AppChangeEventDriver::start() {
 void AppChangeEventDriver::stop() {
     if (isRunning()) {
         mIsRunning = false;
-        forceSendChangeEvent();
+        forceSendChangeEvent(true);
     }
 }
 
@@ -38,16 +38,16 @@ bool AppChangeEventDriver::isRunning() {
     return mIsRunning;
 }
 
-void AppChangeEventDriver::forceSendChangeEvent() {
+void AppChangeEventDriver::forceSendChangeEvent(bool autosave) {
     mLastApp.duration = QDateTime::currentMSecsSinceEpoch() - mLastApp.timeStarted.toMSecsSinceEpoch();
     mLastApp.duration /= 1000; // msec -> sec
 
-    sendChangeEvent(mLastApp);
+    sendChangeEvent(mLastApp, autosave);
     mLastApp = getCurrAppInfo();
 }
 
-void AppChangeEventDriver::sendChangeEvent(AppInfo newApp) {
-    SignalHandler::Get().sendChangeAppEvent(newApp);
+void AppChangeEventDriver::sendChangeEvent(AppInfo newApp, bool autosave) {
+    SignalHandler::Get().sendChangeAppEvent(newApp, autosave);
 }
 
 QString AppChangeEventDriver::exec_cmd(char* cmd) {

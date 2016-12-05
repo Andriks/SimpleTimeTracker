@@ -11,7 +11,7 @@ ISignalHandler& SignalHandler::Get() {
     return OnlyOne;
 }
 
-void SignalHandler::sendChangeAppEvent(AppInfo newApp) {
+void SignalHandler::sendChangeAppEvent(AppInfo newApp, bool autosave) {
     qDebug() << "[pid:" << newApp.pid << "] --> " << newApp.name;
-    DataBase::Get().write(newApp);
+    DataBase::Get().write(newApp, autosave);
 }

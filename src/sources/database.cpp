@@ -20,8 +20,8 @@ IDataBase& DataBase::Get() {
     return OnlyOne;
 }
 
-void DataBase::write(const AppInfo &newApp) {
-    writeToXML(newApp);
+void DataBase::write(const AppInfo &newApp, bool autosave) {
+    writeToXML(newApp, autosave);
 }
 
 StrVector DataBase::getListOfAppByDay(const QString &day) {
@@ -131,11 +131,11 @@ void DataBase::updateDBDoc() {
 
 }
 
-void DataBase::writeToXML(const AppInfo &newApp) {
+void DataBase::writeToXML(const AppInfo &newApp, bool autosave) {
     updateDBDoc();
 
     QDomElement node = mDBDoc.createElement("Application");
-    node.setAttribute("pid", newApp.pid);
+    node.setAttribute("autosave", autosave);
 
     appendSimpleNode(node, "Name", newApp.name);
     appendSimpleNode(node, "Title", newApp.title);

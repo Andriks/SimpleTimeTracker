@@ -14,6 +14,6 @@ private:
 public:
     static ISignalHandler& Get();
 
-    void sendChangeAppEvent(AppInfo newApp) override;
+    void sendChangeAppEvent(AppInfo newApp, bool autosave) override;
 
 };
