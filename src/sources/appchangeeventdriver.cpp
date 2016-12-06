@@ -7,9 +7,9 @@
 
 #include <X11/Xlib.h>
 
-
-unsigned int AppChangeEventDriver::AUTOSAVE_TIMEOUT_MS = 5*1000*60; // 5min
-unsigned int AppChangeEventDriver::UPDATE_TIMEOUT_MS = 1000; // 1sec
+const unsigned int AppChangeEventDriver::UPDATE_TIMEOUT_MS   = 5000;      // 5 sec
+const unsigned int AppChangeEventDriver::AUTOSAVE_TIMEOUT_MS = 5*1000*60; // 5 min
+const unsigned int AppChangeEventDriver::MAX_IDLE_TIME_MS    = 5*1000*60; // 5 min
 
 void AppChangeEventDriver::start() {
     if (isRunning()) {
@@ -24,12 +24,28 @@ void AppChangeEventDriver::start() {
     while (isRunning()) {
         std::this_thread::sleep_for(std::chrono::milliseconds(UPDATE_TIMEOUT_MS));
 
-        QString pid = exec_cmd("xdotool getactivewindow getwindowpid");
-        if (mLastApp.pid != pid) {
-            forceSendChangeEvent();
-        } else if ( currTimeMs()-mLastSave > AUTOSAVE_TIMEOUT_MS ) {
-            forceSendChangeEvent(true);
+        unsigned int idleTimeMs = exec_cmd("xprintidle").toUInt();
+        if (idleTimeMs > MAX_IDLE_TIME_MS) {
+            if (!mIsIdle) {
+                forceSendChangeEvent(true);
+                mIsIdle = true;
+                mLastApp = AppInfo("-1", "idle", "", currTimeMs());
+            }
+            continue;
+        } else {
+            if (mIsIdle) {
+                forceSendChangeEvent(true);
+                mIsIdle = false;
+            }
+
+            QString pid = exec_cmd("xdotool getactivewindow getwindowpid");
+            if (mLastApp.pid != pid) {
+                forceSendChangeEvent();
+            } else if ( currTimeMs()-mLastSave > AUTOSAVE_TIMEOUT_MS ) {
+                forceSendChangeEvent(true);
+            }
         }
+
     }
 }
 

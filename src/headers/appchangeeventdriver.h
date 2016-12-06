@@ -6,8 +6,9 @@
 
 class AppChangeEventDriver : public IServer
 {
-    static unsigned int AUTOSAVE_TIMEOUT_MS;
-    static unsigned int UPDATE_TIMEOUT_MS;
+    static const unsigned int UPDATE_TIMEOUT_MS;
+    static const unsigned int AUTOSAVE_TIMEOUT_MS;
+    static const unsigned int MAX_IDLE_TIME_MS;
 
 public:
     void start() override;
@@ -25,6 +26,7 @@ private:
 
 private:
     bool mIsRunning = false;
+    bool mIsIdle = false;
     AppInfo mLastApp;
     unsigned int mLastSave;
 

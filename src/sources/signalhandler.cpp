@@ -12,7 +12,7 @@ ISignalHandler& SignalHandler::Get() {
 }
 
 void SignalHandler::sendChangeAppEvent(AppInfo newApp, bool autosave) {
-    qDebug() << "[pid:" << newApp.pid << "] --> " << newApp.name <<
+    qDebug() << "[dur:" << (float)newApp.duration/1000 << "] --> " << newApp.name <<
                 (autosave ? " (autosave)": "");
     DataBase::Get().write(newApp, autosave);
 }

@@ -38,7 +38,7 @@ StrVector DataBase::getListOfAppByDay(const QString &day) {
 
     QXmlQuery query;
     query.setFocus(&file);
-    query.setQuery("distinct-values(//Root/Application/Name[text()])");
+    query.setQuery("distinct-values(//Root/Application[@idle='false']/Name[text()])");
 
     QString values;
     if (query.isValid()) {
@@ -74,7 +74,7 @@ float DataBase::getAppTimeByDay(const QString &appName, const QString &day) {
     QXmlQuery query;
     query.setFocus(&file);
     query.bindVariable("appName", QVariant(appName));
-    query.setQuery("sum(//Root/Application[Name=$appName]/Duration)");
+    query.setQuery("sum(//Root/Application[@idle='false' and Name=$appName]/Duration)");
 
     if (query.isValid()) {
         QXmlResultItems xmlResult;
@@ -135,12 +135,19 @@ void DataBase::writeToXML(const AppInfo &newApp, bool autosave) {
     updateDBDoc();
 
     QDomElement node = mDBDoc.createElement("Application");
-    node.setAttribute("autosave", autosave);
+    node.setAttribute("autosave", (autosave ? "true" : "false"));
+    if (newApp.name != "idle") {
+        node.setAttribute("idle", "false");
+        appendSimpleNode(node, "Name", newApp.name);
+        appendSimpleNode(node, "Title", newApp.title);
+        appendSimpleNode(node, "Duration", QString::number(newApp.duration));
+        appendSimpleNode(node, "TimeStarted", QString::number(newApp.timeStarted));
+    } else {
+        node.setAttribute("idle", "true");
+        appendSimpleNode(node, "Duration", QString::number(newApp.duration));
+        appendSimpleNode(node, "TimeStarted", QString::number(newApp.timeStarted));
+    }
 
-    appendSimpleNode(node, "Name", newApp.name);
-    appendSimpleNode(node, "Title", newApp.title);
-    appendSimpleNode(node, "Duration", QString::number(newApp.duration));
-    appendSimpleNode(node, "TimeStarted", QString::number(newApp.timeStarted));
 
     QDomElement root = mDBDoc.documentElement();
     root.appendChild(node);

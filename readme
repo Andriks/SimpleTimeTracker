@@ -9,6 +9,7 @@ Requirements:
    sudo apt-get install libqt4-dev
 3. xdotool
 	sudo apt-get install xdotool
+        sudo apt-get install xprintidle
 
 USAGE:
 At this time you can use run.sh
