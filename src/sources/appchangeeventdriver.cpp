@@ -45,8 +45,7 @@ bool AppChangeEventDriver::isRunning() {
 }
 
 void AppChangeEventDriver::forceSendChangeEvent(bool autosave) {
-    mLastApp.duration = currTimeMs() - mLastApp.timeStarted.toMSecsSinceEpoch();
-    mLastApp.duration /= 1000; // msec -> sec
+    mLastApp.duration = currTimeMs() - mLastApp.timeStarted;
 
     mLastSave = currTimeMs();
     sendChangeEvent(mLastApp, autosave);
@@ -82,7 +81,7 @@ AppInfo AppChangeEventDriver::getCurrAppInfo() {
     QString name = exec_cmd(name_request.toStdString().c_str());
     QString title = exec_cmd("xdotool getwindowfocus getwindowname");
 
-    return AppInfo(pid, name, title, QDateTime::currentDateTime());
+    return AppInfo(pid, name, title, currTimeMs());
 }
 
 unsigned int AppChangeEventDriver::currTimeMs() const

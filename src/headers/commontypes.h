@@ -16,7 +16,7 @@ class AppInfo
 public:
     AppInfo() {}
     AppInfo(const QString &pidIn, const QString &nameIn, const QString &titleIn,
-            const QDateTime &timeStartedIn, const float durationIn = 0) :
+            const unsigned int &timeStartedIn, const unsigned int durationIn = 0) :
         pid(pidIn),
         name(nameIn),
         title(titleIn),
@@ -27,6 +27,6 @@ public:
     QString pid;
     QString name;
     QString title;
-    QDateTime timeStarted;
-    float duration;
+    unsigned int timeStarted;
+    unsigned int duration;
 };

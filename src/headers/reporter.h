@@ -9,7 +9,7 @@
 
 class Reporter
 {
-    typedef QPair<QString, float> ItemType;
+    typedef QPair<QString, unsigned int> ItemType;
 
     const static char *RED;
     const static char *GREEN;
@@ -23,7 +23,7 @@ public:
 private:
     void makeDayReport(const QString& day);
     void makeIntervalReport(const QString& dayBeg, const QString& dayEnd);
-    void printReport(const QVector<ItemType>& vec, const float inputTotalTime = 0) const;
+    void printReport(const QVector<ItemType>& vec, const unsigned int inputTotalTime = 0) const;
 
     // test func to colorize console output
     const char *getColor(const float persent) const;

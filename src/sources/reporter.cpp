@@ -35,12 +35,12 @@ void Reporter::doReport(const QString& request) {
 }
 
 void Reporter::makeDayReport(const QString &day) {
-    float totalTime = 0;
+    unsigned int totalTime = 0;
     QVector<ItemType> appAndTimeVec;
 
     auto appList = DataBase::Get().getListOfAppByDay(day);
     for (auto app : appList) {
-        float duration = DataBase::Get().getAppTimeByDay(app, day);
+        unsigned int duration = DataBase::Get().getAppTimeByDay(app, day);
         ItemType item(app, duration);
         appAndTimeVec.push_back(item);
 
@@ -62,8 +62,8 @@ void Reporter::makeIntervalReport(const QString &dayBeg, const QString &dayEnd) 
     qDebug() << "not implemented";
 }
 
-void Reporter::printReport(const QVector<ItemType> &vec, const float inputTotalTime) const {
-    float totalTime = inputTotalTime;
+void Reporter::printReport(const QVector<ItemType> &vec, const unsigned int inputTotalTime) const {
+    unsigned int totalTime = inputTotalTime;
     if (totalTime == 0) {
         for (auto item : vec) {
             totalTime += item.second;
@@ -71,14 +71,23 @@ void Reporter::printReport(const QVector<ItemType> &vec, const float inputTotalT
     }
 
     float totalPercents = 0;
+    float totalTimeSec = totalTime/1000; // ms->sec
     for (auto item: vec) {
-        float percents = item.second/totalTime*100;
+        float durationSec = (float)item.second/1000; // ms->sec
+        float percents = durationSec/totalTimeSec*100;
         totalPercents += percents;
-        qDebug() << getColor(percents) << "[" << percents << "% | " << item.second/60 << "m | " << item.second << "s] "
+        qDebug() << getColor(percents) << "["
+                 << QString::number(percents, 'f', 3) << "% | "
+                 << QString::number(durationSec/60, 'f', 3) << "m | "
+                 << QString::number(durationSec, 'f', 3) << "s] "
                  << item.first << AUTO;
     }
 
-    qDebug() << RED << "[" << totalPercents << "% | " << totalTime/60 << "m | " << totalTime << "s]" << AUTO;
+    qDebug() << RED << "["
+             << QString::number(totalPercents, 'f', 0) << "%   | "
+             << QString::number(totalTimeSec/60, 'f', 3)  << "m |"
+             << QString::number(totalTimeSec/3600, 'f', 3) << "h ]"
+             << AUTO;
 }
 
 const char *Reporter::getColor(const float persent) const
@@ -86,7 +95,7 @@ const char *Reporter::getColor(const float persent) const
     const char *result = NULL;
     if (persent > 15) {
         result = GREEN;
-    } else if (persent > 10) {
+    } else if (persent > 1) {
         result = BLUE;
     } else {
         result = ORANGE;

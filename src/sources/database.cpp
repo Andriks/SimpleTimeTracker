@@ -140,7 +140,7 @@ void DataBase::writeToXML(const AppInfo &newApp, bool autosave) {
     appendSimpleNode(node, "Name", newApp.name);
     appendSimpleNode(node, "Title", newApp.title);
     appendSimpleNode(node, "Duration", QString::number(newApp.duration));
-    appendSimpleNode(node, "TimeStarted", QString::number(newApp.timeStarted.toMSecsSinceEpoch()));
+    appendSimpleNode(node, "TimeStarted", QString::number(newApp.timeStarted));
 
     QDomElement root = mDBDoc.documentElement();
     root.appendChild(node);
