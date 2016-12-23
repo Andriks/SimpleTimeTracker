@@ -1,10 +1,13 @@
 
 #include "reporter.h"
 #include "database.h"
+#include "configmanager.h"
 
 #include <algorithm>
 
 #include <QDebug>
+#include <QMap>
+#include <QString>
 
 const char *Reporter::RED   = "\033[031m";
 const char *Reporter::GREEN = "\033[032m";
@@ -18,9 +21,21 @@ bool Reporter::checkRequest(const QString &request) const {
     return true;
 }
 
-void Reporter::doReport(const QString& request) {
+void Reporter::doReport(const QString& _request) {
+    QString request;
+    if (_request.isEmpty()) {
+        ConfigManager configMgr;
+        QMap<QString, QString> result = configMgr.getConfigFor(ConfigManager::REPORT);
+        if (!result.contains("default_request")) {
+            qDebug() << "TODO: add error handing - " << "[err] Cannot get default_request from config";
+        }
+        request = result["default_request"];
+    } else {
+        request = _request;
+    }
+
     if (!checkRequest(request)) {
-        qDebug() << "[err] Bad request";
+        qDebug() << "TODO: add error handing - " << "[err] Bad request";
         return;
     }
 
@@ -30,7 +45,7 @@ void Reporter::doReport(const QString& request) {
     } else if (requestVec[0] == "-i" || requestVec[0] == "--interval") {
         makeIntervalReport(requestVec[1], requestVec[2]);
     } else {
-        qDebug() << "unknown command " << requestVec[0];
+        qDebug() << "TODO: add error handing - " << "unknown command " << requestVec[0];
     }
 }
 

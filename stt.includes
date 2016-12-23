@@ -3,3 +3,4 @@ src/headers
 /usr/include/qt5/QtCore
 /usr/include/qt5/QtXml
 /usr/include/qt5/QtXmlPatterns
+src/sources

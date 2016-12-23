@@ -17,3 +17,5 @@ src/sources/signalhandler.cpp
 Makefile
 readme
 run.sh
+src/headers/configmanager.h
+src/sources/configmanager.cpp

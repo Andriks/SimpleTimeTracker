@@ -18,7 +18,7 @@ class Reporter
     const static char *AUTO;
 public:
     bool checkRequest(const QString& request) const;
-    void doReport(const QString &request);
+    void doReport(const QString &_request);
 
 private:
     void makeDayReport(const QString& day);
