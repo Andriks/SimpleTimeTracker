@@ -7,7 +7,7 @@
 
 #include <X11/Xlib.h>
 
-const unsigned int AppChangeEventDriver::UPDATE_TIMEOUT_MS   = 5000;      // 5 sec
+const unsigned int AppChangeEventDriver::UPDATE_TIMEOUT_MS   = 1000;      // 1 sec
 const unsigned int AppChangeEventDriver::AUTOSAVE_TIMEOUT_MS = 5*1000*60; // 5 min
 const unsigned int AppChangeEventDriver::MAX_IDLE_TIME_MS    = 5*1000*60; // 5 min
 
