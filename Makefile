@@ -4,7 +4,7 @@ CXX = g++
 CPP_FLAGS += -g -O0 -pthread -std=c++11 -fPIC
 CPP_FLAGS += -fpermissive
 # CPP_FLAGS += -Wall
-LIBS = -lX11 -lQtCore -lQtXml -lQtXmlPatterns
+LIBS = -lX11 -lQt5Core -lQt5Xml -lQt5XmlPatterns
 
 OBJ_DIR = obj
 BIN_DIR = bin
@@ -12,10 +12,10 @@ HEADER_DIR = src/headers
 SRC_DIR = src/sources
 
 INC_PATH = \
-	-I/usr/include/qt4 \
-	-I/usr/include/qt4/QtCore \
-	-I/usr/include/qt4/QtXml \
-	-I/usr/include/qt4/QtXmlPatterns \
+        -I/usr/include/qt5 \
+        -I/usr/include/qt5/QtCore \
+        -I/usr/include/qt5/QtXml \
+        -I/usr/include/qt5/QtXmlPatterns \
 	-I$(HEADER_DIR) \
 	-I$(SRC_DIR) \
 	$(NULL)

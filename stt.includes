@@ -1,5 +1,5 @@
 src/headers
-/usr/include/qt4
-/usr/include/qt4/QtCore
-/usr/include/qt4/QtXml
-/usr/include/qt4/QtXmlPatterns
+/usr/include/qt5
+/usr/include/qt5/QtCore
+/usr/include/qt5/QtXml
+/usr/include/qt5/QtXmlPatterns
