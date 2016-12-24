@@ -89,6 +89,35 @@ float DataBase::getAppTimeByDay(const QString &appName, const QString &day) {
     return result;
 }
 
+float DataBase::getIdleTimeByDay(const QString &day)
+{
+    float result = -1;
+    QString filename = makeFilename(day);
+    if (!fileExists(filename)) {
+        qDebug() << "[err] file " << filename << " do not exists";
+        return result;
+    }
+
+    QFile file(filename);
+    file.open(QFile::ReadOnly);
+
+    QXmlQuery query;
+    query.setFocus(&file);
+    query.setQuery("sum(//Root/Application[@idle='true']/Duration)");
+
+    if (query.isValid()) {
+        QXmlResultItems xmlResult;
+        query.evaluateTo(&xmlResult);
+        QXmlItem xmlItem(xmlResult.next());
+
+        if (!xmlItem.isNull()) {
+            result = xmlItem.toAtomicValue().toFloat();
+        }
+    }
+
+    return result;
+}
+
 void DataBase::updateDBDoc() {
     QDateTime now = QDateTime::currentDateTime();
     QString day = now.toString("yyyyMMdd");

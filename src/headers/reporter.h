@@ -24,6 +24,7 @@ private:
     void makeDayReport(const QString& day);
     void makeIntervalReport(const QString& dayBeg, const QString& dayEnd);
     void printReport(const QVector<ItemType>& vec, const unsigned int inputTotalTime = 0) const;
+    void printIdle(const unsigned int idleTimeMs) const;
 
     // test func to colorize console output
     const char *getColor(const float persent) const;

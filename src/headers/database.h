@@ -19,6 +19,7 @@ public:
     void write(const AppInfo &newApp, bool autosave) override;
     StrVector getListOfAppByDay(const QString &day) override;
     float getAppTimeByDay(const QString &appName, const QString &day) override;
+    float getIdleTimeByDay(const QString &day) override;
 
 private:
     void updateDBDoc();

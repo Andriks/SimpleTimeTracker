@@ -68,6 +68,7 @@ void Reporter::makeDayReport(const QString &day) {
         });
 
     printReport(appAndTimeVec, totalTime);
+    printIdle(DataBase::Get().getIdleTimeByDay(day));
 }
 
 void Reporter::makeIntervalReport(const QString &dayBeg, const QString &dayEnd) {
@@ -102,6 +103,16 @@ void Reporter::printReport(const QVector<ItemType> &vec, const unsigned int inpu
              << QString::number(totalPercents, 'f', 0) << "%   | "
              << QString::number(totalTimeSec/60, 'f', 3)  << "m |"
              << QString::number(totalTimeSec/3600, 'f', 3) << "h ]"
+             << AUTO;
+}
+
+void Reporter::printIdle(const unsigned int idleTimeMs) const
+{
+    float idleTimeMin = ((float)idleTimeMs/1000) / 60;
+    qDebug() << RED << "["
+             << "Idle time ->"
+             << QString::number(idleTimeMin, 'f', 3)  << "m |"
+             << QString::number(idleTimeMin/60, 'f', 3) << "h ]"
              << AUTO;
 }
 
