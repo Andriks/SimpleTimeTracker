@@ -31,7 +31,8 @@ SRC_CPP = \
 	$(NULL)
 
 SRC_CPP_CONFIGMANAGER = \
-	configmanager.cpp \
+	configmanagerfactory.cpp \
+	reporterconfigmanager.cpp \
 	$(NULL)
 
 OBJ += $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SRC_CPP))
@@ -54,7 +55,7 @@ mkdir:
 clean: 
 	rm -rf $(OBJ_DIR) $(BIN_DIR)
 
-STT: $(OBJ) $(OBJ_CONFIGMANAGER)
+STT: $(OBJ_CONFIGMANAGER) $(OBJ)
 	$(CXX) $(CPP_FLAGS) -o $(BIN_DIR)/$@ $^ $(LIBS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp

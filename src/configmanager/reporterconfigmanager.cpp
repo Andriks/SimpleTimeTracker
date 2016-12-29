@@ -1,30 +1,36 @@
-#include "configmanager.h"
+#include "reporterconfigmanager.h"
 
 #include <QFile>
-
 #include <QFileInfo>
 #include <QJsonDocument>
 #include <QJsonParseError>
 
 #include <QDebug>
 
-ConfigManager::ConfigManager()
-{
 
+const char* ReporterConfigManager::CONFIG_FILENAME = "./config/reporter.json";
+const char* ReporterConfigManager::DEFAULT_REQUEST_KEY = "default_request";
+
+
+bool ReporterConfigManager::isValid()
+{
+    // TODO: implement it
+    return true;
 }
 
-QMap<QString, QString> ConfigManager::getConfigFor(const ConfigManager::Components comp)
+void ReporterConfigManager::updateConfig()
 {
-    switch (comp) {
-    case REPORT:
-    return getConfigForREPORT();
-        break;
-    default:
-        break;
+    mConfig = parseFile(CONFIG_FILENAME);
+}
+
+QJsonValue ReporterConfigManager::get(const char*  key)
+{
+    if (isValid()) {
+        return mConfig[key];
     }
 }
 
-QJsonObject ConfigManager::parseFile(QString filename)
+QJsonObject ReporterConfigManager::parseFile(QString filename)
 {
 
     QFile jsonFile(filename);
@@ -52,18 +58,4 @@ QJsonObject ConfigManager::parseFile(QString filename)
     jsonFile.close();
 
     return jsonDoc.object();
-}
-
-QMap<QString, QString> ConfigManager::getConfigForREPORT()
-{
-    QString filename = "./config/reporter.json";
-    QJsonObject obj = parseFile(filename);
-
-    QMap<QString, QString> result;
-    if (obj.empty()) {
-        return result;
-    }
-
-    result.insert("default_request", obj["default_request"].toString());
-    return result;
 }

@@ -1,7 +1,8 @@
 
 #include "reporter.h"
 #include "database.h"
-#include "configmanager.h"
+#include "configmanagerfactory.h"
+#include "reporterconfigmanager.h"
 
 #include <algorithm>
 
@@ -24,12 +25,8 @@ bool Reporter::checkRequest(const QString &request) const {
 void Reporter::doReport(const QString& _request) {
     QString request;
     if (_request.isEmpty()) {
-        ConfigManager configMgr;
-        QMap<QString, QString> result = configMgr.getConfigFor(ConfigManager::REPORT);
-        if (!result.contains("default_request")) {
-            qDebug() << "TODO: add error handing - " << "[err] Cannot get default_request from config";
-        }
-        request = result["default_request"];
+        auto configMgr = ConfigManagerFactory::getConfigFor(ConfigManagerFactory::REPORTER);
+        request = configMgr->get(ReporterConfigManager::DEFAULT_REQUEST_KEY).toString();
     } else {
         request = _request;
     }

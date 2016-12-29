@@ -17,5 +17,8 @@ src/sources/deamoncreator.cpp
 src/sources/main.cpp
 src/sources/reporter.cpp
 src/sources/signalhandler.cpp
-src/configmanager/configmanager.cpp
-src/configmanager/configmanager.h
+src/configmanager/configmanagerfactory.cpp
+src/configmanager/configmanagerfactory.h
+src/configmanager/reporterconfigmanager.h
+src/configmanager/reporterconfigmanager.cpp
+src/configmanager/iconfigmanager.h
