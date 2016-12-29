@@ -1,3 +1,6 @@
+Makefile
+readme
+run.sh
 src/headers/appchangeeventdriver.h
 src/headers/commontypes.h
 src/headers/database.h
@@ -14,8 +17,5 @@ src/sources/deamoncreator.cpp
 src/sources/main.cpp
 src/sources/reporter.cpp
 src/sources/signalhandler.cpp
-Makefile
-readme
-run.sh
-src/headers/configmanager.h
-src/sources/configmanager.cpp
+src/configmanager/configmanager.cpp
+src/configmanager/configmanager.h
