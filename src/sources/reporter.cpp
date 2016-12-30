@@ -38,7 +38,11 @@ void Reporter::doReport(const QString& _request) {
 
     QStringList requestVec = request.split(" ", QString::SkipEmptyParts);
     if (requestVec[0] == "-d" || requestVec[0] == "--day") {
-        makeDayReport(requestVec[1]);
+        if (requestVec[1] == "-p") {
+            makeProductivityDayReport(requestVec[2]);
+        } else {
+            makeDayReport(requestVec[1]);
+        }
     } else if (requestVec[0] == "-i" || requestVec[0] == "--interval") {
         makeIntervalReport(requestVec[1], requestVec[2]);
     } else {
@@ -65,6 +69,59 @@ void Reporter::makeDayReport(const QString &day) {
         });
 
     printReport(appAndTimeVec, totalTime);
+    printIdle(DataBase::Get().getIdleTimeByDay(day));
+}
+
+void Reporter::makeProductivityDayReport(const QString &day)
+{
+    auto configMgr = ConfigManagerFactory::getConfigFor(ConfigManagerFactory::REPORTER);
+    auto productivity = configMgr->get(ReporterConfigManager::PRODUCTIVITY_KEY).toObject();
+
+    QVector<QString> unmarkedApp;
+
+    unsigned int totalTime = 0;
+    unsigned int unProdTime = 0;
+    unsigned int netrualTime = 0;
+    unsigned int prodTime = 0;
+    unsigned int unmarkedTime = 0;
+
+    auto appList = DataBase::Get().getListOfAppByDay(day);
+    for (auto app: appList) {
+        unsigned int duration = DataBase::Get().getAppTimeByDay(app, day);
+        totalTime += duration;
+
+        switch (productivity[app].toInt()) {
+        case ReporterConfigManager::PRODUCTIVE:
+            prodTime += duration;
+            break;
+        case ReporterConfigManager::NEUTRAL:
+            netrualTime += duration;
+            break;
+        case ReporterConfigManager::UNPRODUCTIVE:
+            unProdTime += duration;
+            break;
+        default:
+            unmarkedTime += duration;
+            unmarkedApp.push_back(app);
+            break;
+        }
+    }
+
+    qDebug().nospace()
+            << "\n" << GREEN  << "[prodactive -   " << beautyRersents(prodTime, totalTime)     << "|" << beautyTime(prodTime) << "]"
+            << "\n" << BLUE   << "[netrual -      " << beautyRersents(netrualTime, totalTime)  << "|" << beautyTime(netrualTime) << "]"
+            << "\n" << RED    << "[unprodactive - " << beautyRersents(unProdTime, totalTime)   << "|" << beautyTime(unProdTime) << "]"
+            << AUTO;
+    if (unmarkedTime > 0) {
+        qDebug().nospace() << ORANGE
+                           << "[unmarked -     " << beautyRersents(unmarkedTime, totalTime) << "|" << beautyTime(unmarkedTime) << "]"
+                           << AUTO;
+        for (auto app: unmarkedApp) {
+            qDebug().nospace() << ORANGE << "    " << app << AUTO;
+        }
+    }
+
+
     printIdle(DataBase::Get().getIdleTimeByDay(day));
 }
 
@@ -105,12 +162,22 @@ void Reporter::printReport(const QVector<ItemType> &vec, const unsigned int inpu
 
 void Reporter::printIdle(const unsigned int idleTimeMs) const
 {
-    float idleTimeMin = ((float)idleTimeMs/1000) / 60;
-    qDebug() << RED << "["
-             << "Idle time ->"
-             << QString::number(idleTimeMin, 'f', 3)  << "m |"
-             << QString::number(idleTimeMin/60, 'f', 3) << "h ]"
-             << AUTO;
+    if (idleTimeMs > 0) {
+        qDebug().nospace() << RED
+                 << "[Idle time -> " << beautyTime(idleTimeMs) << "]"
+                 << AUTO;
+    }
+}
+
+QString Reporter::beautyTime(const unsigned int timeMs) const
+{
+    return QTime(0,0,0).addMSecs(timeMs).toString("hh:mm:ss");
+}
+
+QString Reporter::beautyRersents(const unsigned int timeMs, const unsigned int totalTimeMs) const
+{
+    float persents = ((float)timeMs / totalTimeMs) * 100;
+    return QString::number(persents, 'f', 1) + "%";
 }
 
 const char *Reporter::getColor(const float persent) const

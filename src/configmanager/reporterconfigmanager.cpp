@@ -10,6 +10,7 @@
 
 const char* ReporterConfigManager::CONFIG_FILENAME = "./config/reporter.json";
 const char* ReporterConfigManager::DEFAULT_REQUEST_KEY = "default_request";
+const char* ReporterConfigManager::PRODUCTIVITY_KEY = "productivity";
 
 
 bool ReporterConfigManager::isValid()
