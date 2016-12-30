@@ -27,9 +27,6 @@ public:
     QJsonValue get(const char*  key) override;
 
 private:
-    QJsonObject parseFile(QString filename);
-
-private:
     bool mIsValid = false;
     QJsonObject mConfig;
 

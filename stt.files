@@ -22,3 +22,5 @@ src/configmanager/configmanagerfactory.h
 src/configmanager/reporterconfigmanager.h
 src/configmanager/reporterconfigmanager.cpp
 src/configmanager/iconfigmanager.h
+src/configmanager/jsonparser.h
+src/configmanager/jsonparser.cpp

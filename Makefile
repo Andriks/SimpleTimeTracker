@@ -31,6 +31,7 @@ SRC_CPP = \
 	$(NULL)
 
 SRC_CPP_CONFIGMANAGER = \
+	jsonparser.cpp \
 	configmanagerfactory.cpp \
 	reporterconfigmanager.cpp \
 	$(NULL)
