@@ -7,7 +7,6 @@
 #include <algorithm>
 
 #include <QDebug>
-#include <QMap>
 #include <QString>
 
 const char *Reporter::RED   = "\033[031m";
@@ -68,7 +67,14 @@ void Reporter::makeDayReport(const QString &day) {
             return left.second > right.second;
         });
 
-    printReport(appAndTimeVec, totalTime);
+    for (auto item: appAndTimeVec) {
+        unsigned int time = item.second;
+        qDebug() << GREEN << "["
+                 << item.first << "->" << beautyRersents(time, totalTime) << "|" << beautyTime(time) << "]"
+                 << AUTO;
+    }
+
+    printTotal(totalTime);
     printIdle(DataBase::Get().getIdleTimeByDay(day));
 }
 
@@ -121,7 +127,7 @@ void Reporter::makeProductivityDayReport(const QString &day)
         }
     }
 
-
+    printTotal(totalTime);
     printIdle(DataBase::Get().getIdleTimeByDay(day));
 }
 
@@ -132,39 +138,20 @@ void Reporter::makeIntervalReport(const QString &dayBeg, const QString &dayEnd) 
     qDebug() << "not implemented";
 }
 
-void Reporter::printReport(const QVector<ItemType> &vec, const unsigned int inputTotalTime) const {
-    unsigned int totalTime = inputTotalTime;
-    if (totalTime == 0) {
-        for (auto item : vec) {
-            totalTime += item.second;
-        }
-    }
-
-    float totalPercents = 0;
-    float totalTimeSec = totalTime/1000; // ms->sec
-    for (auto item: vec) {
-        float durationSec = (float)item.second/1000; // ms->sec
-        float percents = durationSec/totalTimeSec*100;
-        totalPercents += percents;
-        qDebug() << getColor(percents) << "["
-                 << QString::number(percents, 'f', 3) << "% | "
-                 << QString::number(durationSec/60, 'f', 3) << "m | "
-                 << QString::number(durationSec, 'f', 3) << "s] "
-                 << item.first << AUTO;
-    }
-
-    qDebug() << RED << "["
-             << QString::number(totalPercents, 'f', 0) << "%   | "
-             << QString::number(totalTimeSec/60, 'f', 3)  << "m |"
-             << QString::number(totalTimeSec/3600, 'f', 3) << "h ]"
-             << AUTO;
-}
-
 void Reporter::printIdle(const unsigned int idleTimeMs) const
 {
     if (idleTimeMs > 0) {
         qDebug().nospace() << RED
                  << "[Idle time -> " << beautyTime(idleTimeMs) << "]"
+                 << AUTO;
+    }
+}
+
+void Reporter::printTotal(const unsigned int totalTimeMs) const
+{
+    if (totalTimeMs > 0) {
+        qDebug().nospace() << ORANGE
+                 << "[Total time -> " << beautyTime(totalTimeMs) << "]"
                  << AUTO;
     }
 }
@@ -178,18 +165,4 @@ QString Reporter::beautyRersents(const unsigned int timeMs, const unsigned int t
 {
     float persents = ((float)timeMs / totalTimeMs) * 100;
     return QString::number(persents, 'f', 1) + "%";
-}
-
-const char *Reporter::getColor(const float persent) const
-{
-    const char *result = NULL;
-    if (persent > 15) {
-        result = GREEN;
-    } else if (persent > 1) {
-        result = BLUE;
-    } else {
-        result = ORANGE;
-    }
-
-    return result;
 }
