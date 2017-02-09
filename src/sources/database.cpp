@@ -129,6 +129,7 @@ void DataBase::updateDBDoc() {
             qDebug() << "Failed to open file for writing.";
             return;
         }
+        mDBDoc.clear();
         mDBDocName = day;
 
         QDomProcessingInstruction decl =
