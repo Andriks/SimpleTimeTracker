@@ -10,6 +10,7 @@ class ConfigManagerFactory
 public:
     enum Components {
         REPORTER = 1,
+        APP_CHANGE_EVENT_DRIVER = 2,
     };
 
 public:

@@ -24,3 +24,5 @@ src/configmanager/reporterconfigmanager.cpp
 src/configmanager/iconfigmanager.h
 src/configmanager/jsonparser.h
 src/configmanager/jsonparser.cpp
+src/configmanager/appchangeeventdriverconfigmanager.h
+src/configmanager/appchangeeventdriverconfigmanager.cpp

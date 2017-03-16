@@ -20,6 +20,10 @@ protected:
     virtual void sendChangeEvent(AppInfo newApp, bool autosave);
 
 private:
+    void updateTrackedTime();
+    bool isTrackedTime(const QTime time) const;
+
+private:
     QString exec_cmd(char* cmd);
     AppInfo getCurrAppInfo();
     unsigned int currTimeMs() const;
@@ -29,5 +33,7 @@ private:
     bool mIsIdle = false;
     AppInfo mLastApp;
     unsigned int mLastSave;
+    QTime mTrackFrom;
+    QTime mTrackTill;
 
 };

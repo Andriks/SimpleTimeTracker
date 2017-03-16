@@ -34,6 +34,7 @@ SRC_CPP_CONFIGMANAGER = \
 	jsonparser.cpp \
 	configmanagerfactory.cpp \
 	reporterconfigmanager.cpp \
+        appchangeeventdriverconfigmanager.cpp \
 	$(NULL)
 
 OBJ += $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SRC_CPP))

@@ -1,5 +1,7 @@
 #include "appchangeeventdriver.h"
 #include "signalhandler.h"
+#include "configmanagerfactory.h"
+#include "appchangeeventdriverconfigmanager.h"
 
 #include <stdio.h>
 #include <thread>
@@ -16,6 +18,8 @@ void AppChangeEventDriver::start() {
         return;
     }
 
+    updateTrackedTime();
+
     mIsRunning = true;
     mLastSave = currTimeMs();
     mLastApp = getCurrAppInfo();
@@ -23,6 +27,14 @@ void AppChangeEventDriver::start() {
     // run event loop
     while (isRunning()) {
         std::this_thread::sleep_for(std::chrono::milliseconds(UPDATE_TIMEOUT_MS));
+
+        if (!isTrackedTime(QDateTime::currentDateTime().time())) {
+            if (!mIsIdle) {
+                forceSendChangeEvent(true);
+                mIsIdle = true;
+            }
+            continue;
+        }
 
         unsigned int idleTimeMs = exec_cmd("xprintidle").toUInt();
         if (idleTimeMs > MAX_IDLE_TIME_MS) {
@@ -61,6 +73,8 @@ bool AppChangeEventDriver::isRunning() {
 }
 
 void AppChangeEventDriver::forceSendChangeEvent(bool autosave) {
+
+
     mLastApp.duration = currTimeMs() - mLastApp.timeStarted;
 
     mLastSave = currTimeMs();
@@ -71,6 +85,20 @@ void AppChangeEventDriver::forceSendChangeEvent(bool autosave) {
 void AppChangeEventDriver::sendChangeEvent(AppInfo newApp, bool autosave) {
     SignalHandler::Get().sendChangeAppEvent(newApp, autosave);
 }
+
+void AppChangeEventDriver::updateTrackedTime()
+{
+    auto configMgr = ConfigManagerFactory::getConfigFor(ConfigManagerFactory::APP_CHANGE_EVENT_DRIVER);
+    auto reportFromStr = configMgr->get(AppChangeEventDriverConfigManager::REPORT_FROM_KEY).toString();
+    auto reportTillStr = configMgr->get(AppChangeEventDriverConfigManager::REPORT_TILL_KEY).toString();
+
+    mTrackFrom = QTime::fromString(reportFromStr, "hh:mm:ss");
+    mTrackTill = QTime::fromString(reportTillStr, "hh:mm:ss");
+}
+
+bool AppChangeEventDriver::isTrackedTime(const QTime time) const
+{
+    return (time >= mTrackFrom) && (time < mTrackTill);}
 
 QString AppChangeEventDriver::exec_cmd(char* cmd) {
     FILE* pipe = popen(cmd, "r");
