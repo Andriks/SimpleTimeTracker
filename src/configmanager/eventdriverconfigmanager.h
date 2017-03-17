@@ -4,7 +4,7 @@
 #include "iconfigmanager.h"
 
 
-class AppChangeEventDriverConfigManager: public IConfigManager
+class EventDriverConfigManager: public IConfigManager
 {
 public:
     const static char* CONFIG_FILENAME;

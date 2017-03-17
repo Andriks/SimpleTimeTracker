@@ -1,8 +1,8 @@
 
 #pragma once
 
-#include "Iserver.h"
-#include "appchangeeventdriver.h"
+#include "iserver.h"
+#include "eventdriverserver.h"
 #include "stt_algorithm.h"
 
 #include <string>
@@ -33,6 +33,6 @@ private:
     bool procExists(pid_t pid);
 
 private:
-    std::unique_ptr<IServer> mDriver = algo::make_unique<AppChangeEventDriver>();
+    std::unique_ptr<IServer> mDriver = algo::make_unique<EventDriverServer>();
     static std::string mLockfileName;
 };

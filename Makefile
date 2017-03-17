@@ -10,21 +10,22 @@ OBJ_DIR = obj
 BIN_DIR = bin
 SRC_DIR = src/sources
 CONFIGMANAGER_DIR = src/configmanager
+EVENT_DRIVER_DIR = src/event_driver
 
 INC_PATH = \
 	-I/usr/include/qt5 \
 	-I/usr/include/qt5/QtCore \
 	-I/usr/include/qt5/QtXml \
 	-I/usr/include/qt5/QtXmlPatterns \
-	-Isrc/configmanager \
 	-Isrc/headers \
+	-I$(CONFIGMANAGER_DIR) \
+	-I$(EVENT_DRIVER_DIR) \
 	-I$(SRC_DIR) \
 	$(NULL)
 
 SRC_CPP = \
 	main.cpp \
 	deamoncreator.cpp \
-	appchangeeventdriver.cpp \
 	signalhandler.cpp \
 	database.cpp \
 	reporter.cpp \
@@ -34,11 +35,18 @@ SRC_CPP_CONFIGMANAGER = \
 	jsonparser.cpp \
 	configmanagerfactory.cpp \
 	reporterconfigmanager.cpp \
-        appchangeeventdriverconfigmanager.cpp \
+	eventdriverconfigmanager.cpp \
+	$(NULL)
+
+SRC_CPP_EVENT_DRIVER = \
+	eventdriverserver.cpp \
+	eventdriverconfiguration.cpp \
+	linuxstatemanager.cpp \
 	$(NULL)
 
 OBJ += $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SRC_CPP))
 OBJ_CONFIGMANAGER += $(patsubst %.cpp, $(OBJ_DIR)/configmanager/%.o, $(SRC_CPP_CONFIGMANAGER))
+OBJ_EVENT_DRIVER += $(patsubst %.cpp, $(OBJ_DIR)/event_driver/%.o, $(SRC_CPP_EVENT_DRIVER))
 
 .PHONY: mkdir run
 
@@ -52,16 +60,20 @@ run: build
 mkdir:
 	@mkdir -p $(OBJ_DIR)
 	@mkdir -p $(OBJ_DIR)/configmanager
+	@mkdir -p $(OBJ_DIR)/event_driver
 	@mkdir -p $(BIN_DIR)
 
 clean: 
 	rm -rf $(OBJ_DIR) $(BIN_DIR)
 
-STT: $(OBJ_CONFIGMANAGER) $(OBJ)
+STT: $(OBJ_CONFIGMANAGER) $(OBJ_EVENT_DRIVER) $(OBJ)
 	$(CXX) $(CPP_FLAGS) -o $(BIN_DIR)/$@ $^ $(LIBS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CPP_FLAGS) -c $(INC_PATH) $< -o $@
 
 $(OBJ_DIR)/configmanager/%.o: $(CONFIGMANAGER_DIR)/%.cpp
+	$(CXX) $(CPP_FLAGS) -c $(INC_PATH) $< -o $@
+
+$(OBJ_DIR)/event_driver/%.o: $(EVENT_DRIVER_DIR)/%.cpp
 	$(CXX) $(CPP_FLAGS) -c $(INC_PATH) $< -o $@

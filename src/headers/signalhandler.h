@@ -1,5 +1,5 @@
 
-#include "Isignalhandler.h"
+#include "isignalhandler.h"
 #include "commontypes.h"
 
 class SignalHandler: public ISignalHandler

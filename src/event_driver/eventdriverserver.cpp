@@ -1,7 +1,7 @@
-#include "appchangeeventdriver.h"
+#include "eventdriverserver.h"
 #include "signalhandler.h"
 #include "configmanagerfactory.h"
-#include "appchangeeventdriverconfigmanager.h"
+#include "eventdriverconfigmanager.h"
 
 #include <stdio.h>
 #include <thread>
@@ -9,11 +9,12 @@
 
 #include <X11/Xlib.h>
 
-const unsigned int AppChangeEventDriver::UPDATE_TIMEOUT_MS   = 1000;      // 1 sec
-const unsigned int AppChangeEventDriver::AUTOSAVE_TIMEOUT_MS = 5*1000*60; // 5 min
-const unsigned int AppChangeEventDriver::MAX_IDLE_TIME_MS    = 5*1000*60; // 5 min
+const unsigned int EventDriverServer::UPDATE_TIMEOUT_MS   = 1000;      // 1 sec
+const unsigned int EventDriverServer::AUTOSAVE_TIMEOUT_MS = 5*1000*60; // 5 min
+const unsigned int EventDriverServer::MAX_IDLE_TIME_MS    = 5*1000*60; // 5 min
 
-void AppChangeEventDriver::start() {
+void EventDriverServer::start()
+{
     if (isRunning()) {
         return;
     }
@@ -61,18 +62,20 @@ void AppChangeEventDriver::start() {
     }
 }
 
-void AppChangeEventDriver::stop() {
+void EventDriverServer::stop()
+{
     if (isRunning()) {
         mIsRunning = false;
         forceSendChangeEvent(true);
     }
 }
 
-bool AppChangeEventDriver::isRunning() {
+bool EventDriverServer::isRunning() {
     return mIsRunning;
 }
 
-void AppChangeEventDriver::forceSendChangeEvent(bool autosave) {
+void EventDriverServer::forceSendChangeEvent(bool autosave)
+{
 
 
     mLastApp.duration = currTimeMs() - mLastApp.timeStarted;
@@ -82,25 +85,28 @@ void AppChangeEventDriver::forceSendChangeEvent(bool autosave) {
     mLastApp = getCurrAppInfo();
 }
 
-void AppChangeEventDriver::sendChangeEvent(AppInfo newApp, bool autosave) {
+void EventDriverServer::sendChangeEvent(AppInfo newApp, bool autosave)
+{
     SignalHandler::Get().sendChangeAppEvent(newApp, autosave);
 }
 
-void AppChangeEventDriver::updateTrackedTime()
+void EventDriverServer::updateTrackedTime()
 {
     auto configMgr = ConfigManagerFactory::getConfigFor(ConfigManagerFactory::APP_CHANGE_EVENT_DRIVER);
-    auto reportFromStr = configMgr->get(AppChangeEventDriverConfigManager::REPORT_FROM_KEY).toString();
-    auto reportTillStr = configMgr->get(AppChangeEventDriverConfigManager::REPORT_TILL_KEY).toString();
+    auto reportFromStr = configMgr->get(EventDriverConfigManager::REPORT_FROM_KEY).toString();
+    auto reportTillStr = configMgr->get(EventDriverConfigManager::REPORT_TILL_KEY).toString();
 
     mTrackFrom = QTime::fromString(reportFromStr, "hh:mm:ss");
     mTrackTill = QTime::fromString(reportTillStr, "hh:mm:ss");
 }
 
-bool AppChangeEventDriver::isTrackedTime(const QTime time) const
+bool EventDriverServer::isTrackedTime(const QTime time) const
 {
-    return (time >= mTrackFrom) && (time < mTrackTill);}
+    return (time >= mTrackFrom) && (time < mTrackTill);
+}
 
-QString AppChangeEventDriver::exec_cmd(char* cmd) {
+QString EventDriverServer::exec_cmd(char* cmd)
+{
     FILE* pipe = popen(cmd, "r");
     if (!pipe) {
         return "ERROR\n";
@@ -119,7 +125,8 @@ QString AppChangeEventDriver::exec_cmd(char* cmd) {
     return result.remove(result.size()-1, 1);
 }
 
-AppInfo AppChangeEventDriver::getCurrAppInfo() {
+AppInfo EventDriverServer::getCurrAppInfo()
+{
     QString pid = exec_cmd("xdotool getactivewindow getwindowpid");
     QString name_request = "ps -p " + pid + " -o comm=";
     QString name = exec_cmd(name_request.toStdString().c_str());
@@ -128,7 +135,7 @@ AppInfo AppChangeEventDriver::getCurrAppInfo() {
     return AppInfo(pid, name, title, currTimeMs());
 }
 
-unsigned int AppChangeEventDriver::currTimeMs() const
+unsigned int EventDriverServer::currTimeMs() const
 {
     return QDateTime::currentMSecsSinceEpoch();
 }

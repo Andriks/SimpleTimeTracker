@@ -1,10 +1,10 @@
 
 #pragma once
 
-#include "Iserver.h"
+#include "iserver.h"
 #include "commontypes.h"
 
-class AppChangeEventDriver : public IServer
+class EventDriverServer : public IServer
 {
     static const unsigned int UPDATE_TIMEOUT_MS;
     static const unsigned int AUTOSAVE_TIMEOUT_MS;
@@ -15,11 +15,10 @@ public:
     void stop() override;
     bool isRunning() override;
 
-protected:
-    virtual void forceSendChangeEvent(bool autosave = false);
-    virtual void sendChangeEvent(AppInfo newApp, bool autosave);
-
 private:
+    void forceSendChangeEvent(bool autosave = false);
+    void sendChangeEvent(AppInfo newApp, bool autosave);
+
     void updateTrackedTime();
     bool isTrackedTime(const QTime time) const;
 

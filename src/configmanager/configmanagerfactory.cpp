@@ -1,6 +1,6 @@
 #include "configmanagerfactory.h"
 #include "reporterconfigmanager.h"
-#include "appchangeeventdriverconfigmanager.h"
+#include "eventdriverconfigmanager.h"
 
 #include <QDebug>
 
@@ -13,7 +13,7 @@ std::shared_ptr<IConfigManager> ConfigManagerFactory::getConfigFor(const ConfigM
         result = std::shared_ptr<IConfigManager>(new ReporterConfigManager());
         break;
     case APP_CHANGE_EVENT_DRIVER:
-        result = std::shared_ptr<IConfigManager>(new AppChangeEventDriverConfigManager());
+        result = std::shared_ptr<IConfigManager>(new EventDriverConfigManager());
         break;
     default:
         break;
