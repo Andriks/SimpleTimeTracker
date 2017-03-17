@@ -31,3 +31,13 @@ src/event_driver/linuxstatemanager.h
 src/event_driver/linuxstatemanager.cpp
 src/event_driver/eventdriverconfiguration.h
 src/event_driver/eventdriverconfiguration.cpp
+src/event_driver/activetrackingstate.h
+src/event_driver/astate.h
+src/event_driver/istate.h
+src/event_driver/notrackingstate.cpp
+src/event_driver/notrackingstate.h
+src/event_driver/statemachine.cpp
+src/event_driver/statemachine.h
+src/event_driver/statemachineexception.h
+src/event_driver/astate.h
+src/event_driver/activetrackingstate.cpp
