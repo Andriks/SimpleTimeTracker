@@ -43,3 +43,5 @@ src/event_driver/astate.h
 src/event_driver/activetrackingstate.cpp
 src/event_driver/eventtracker.h
 src/event_driver/eventtracker.cpp
+src/event_driver/statechangemanager.h
+src/event_driver/statechangemanager.cpp

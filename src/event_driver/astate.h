@@ -4,25 +4,19 @@
 #include <memory>
 
 #include "istate.h"
-#include "iosstatemanager.h"
 #include "statemachine.h"
 
 
 class AState : public IState {
 public:
-    AState(StateMachine *parent,
-           std::shared_ptr<IOSStateManager> osStateMgr,
-           std::shared_ptr<EventTracker> eventTracker):
+    AState(StateMachine *parent, std::shared_ptr<StateChangeManager> stateChangeMgr) :
         mParent(parent),
-        mOSStateMgr(osStateMgr),
-        mEventTracker(eventTracker)
+        mStateChangeMgr(stateChangeMgr)
     {}
-
 
 protected:
     StateMachine *mParent;
-    std::shared_ptr<IOSStateManager> mOSStateMgr;
-    std::shared_ptr<EventTracker> mEventTracker;
+    std::shared_ptr<StateChangeManager> mStateChangeMgr;
 };
 
 #endif // ASTATE_H

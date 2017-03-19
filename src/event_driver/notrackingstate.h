@@ -8,9 +8,7 @@
 class NoTrackingState: public AState
 {
 public:
-    NoTrackingState(StateMachine *parent,
-                    std::shared_ptr<IOSStateManager> osStateMgr,
-                    std::shared_ptr<EventTracker> eventTracker);
+    NoTrackingState(StateMachine *parent, std::shared_ptr<StateChangeManager> stateChangeMgr);
 
 public:
     virtual StateEnum checkNextState();

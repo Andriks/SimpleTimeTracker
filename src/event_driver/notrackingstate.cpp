@@ -2,9 +2,8 @@
 #include "statemachineexception.h"
 
 NoTrackingState::NoTrackingState(StateMachine *parent,
-                                 std::shared_ptr<IOSStateManager> osStateMgr,
-                                 std::shared_ptr<EventTracker> eventTracker) :
-    AState(parent, osStateMgr, eventTracker)
+                                 std::shared_ptr<StateChangeManager> stateChangeMgr) :
+    AState(parent, stateChangeMgr)
 {
 }
 

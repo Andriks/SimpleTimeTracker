@@ -4,11 +4,13 @@
 #include "activetrackingstate.h"
 #include "statemachineexception.h"
 
+
 #include "linuxstatemanager.h"
+#include "eventtracker.h"
+#include "eventdriverconfiguration.h"
 
 StateMachine::StateMachine() :
-    mOSStateMgr(nullptr),
-    mEventTracker(nullptr),
+    mStateChangeMgr(nullptr),
     mCurrStateKey(StateEnum::ACTIVE_TRACKING),
     mCurrState(nullptr)
 {
@@ -16,12 +18,17 @@ StateMachine::StateMachine() :
 
 void StateMachine::init()
 {
-    mOSStateMgr = std::make_shared<LinuxStateManager>();
-    mEventTracker = std::make_shared<EventTracker>(mOSStateMgr);
-    mConfiguration = std::make_shared<EventDriverConfiguration>();
+    mStateChangeMgr = std::make_shared<StateChangeManager>();
 
-    mStateMap.insert(std::make_pair(StateEnum::NO_TRACKING, std::make_shared<NoTrackingState>(this, mOSStateMgr, mEventTracker)));
-    mStateMap.insert(std::make_pair(StateEnum::ACTIVE_TRACKING, std::make_shared<ActiveTrackingState>(this, mOSStateMgr, mEventTracker)));
+    auto osStateMgr = std::make_shared<LinuxStateManager>();
+    mStateChangeMgr->setOSStateMgr(osStateMgr);
+    auto eventTracker = std::make_shared<EventTracker>(osStateMgr);
+    mStateChangeMgr->setEventTracker(eventTracker);
+    auto conf = std::make_shared<EventDriverConfiguration>();
+    mStateChangeMgr->setConfiguration(conf);
+
+    mStateMap.insert(std::make_pair(StateEnum::NO_TRACKING, std::make_shared<NoTrackingState>(this, mStateChangeMgr)));
+    mStateMap.insert(std::make_pair(StateEnum::ACTIVE_TRACKING, std::make_shared<ActiveTrackingState>(this, mStateChangeMgr)));
 
     mCurrState = getStatePtr(mCurrStateKey);
 }

@@ -5,9 +5,7 @@
 #include <memory>
 
 #include "istate.h"
-#include "iosstatemanager.h"
-#include "eventtracker.h"
-#include "eventdriverconfiguration.h"
+#include "statechangemanager.h"
 
 enum class StateEnum {
     NO_TRACKING = 1,
@@ -27,9 +25,7 @@ public:
     state_ptr getStatePtr(StateEnum key);
 
 private:
-    std::shared_ptr<IOSStateManager> mOSStateMgr;
-    std::shared_ptr<EventTracker> mEventTracker;
-    std::shared_ptr<EventDriverConfiguration> mConfiguration;
+    std::shared_ptr<StateChangeManager> mStateChangeMgr;
     StateEnum mCurrStateKey;
     state_ptr mCurrState;
     std::map<StateEnum, state_ptr> mStateMap;

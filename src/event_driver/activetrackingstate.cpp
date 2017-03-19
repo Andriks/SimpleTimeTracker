@@ -2,9 +2,8 @@
 #include "statemachineexception.h"
 
 ActiveTrackingState::ActiveTrackingState(StateMachine *parent,
-                                         std::shared_ptr<IOSStateManager> osStateMgr,
-                                         std::shared_ptr<EventTracker> eventTracker) :
-    AState(parent, osStateMgr, eventTracker)
+                                         std::shared_ptr<StateChangeManager> stateChangeMgr) :
+    AState(parent, stateChangeMgr)
 {
 }
 
@@ -34,8 +33,9 @@ std::shared_ptr<IState> ActiveTrackingState::goTo(StateEnum state)
 
 void ActiveTrackingState::procNoStateChange()
 {
-    if (mEventTracker->getCachedAppInfo() != mEventTracker->getCurrAppInfo()) {
-        mEventTracker->forceSendChangeEvent(false);
+    auto eventTracker = mStateChangeMgr->eventTracker();
+    if (eventTracker->getCachedAppInfo() != eventTracker->getCurrAppInfo()) {
+        eventTracker->forceSendChangeEvent(false);
     }
 }
 
