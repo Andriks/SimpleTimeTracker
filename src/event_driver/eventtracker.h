@@ -17,6 +17,7 @@ public:
 
     AppInfo getCachedAppInfo();
     AppInfo getCurrAppInfo();
+    unsigned int getTimeFromLastSaveMs();
     unsigned int currTimeMs() const;
 
 private:

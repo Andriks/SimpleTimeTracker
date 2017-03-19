@@ -18,6 +18,12 @@ void EventDriverConfiguration::readConfiguration()
 
     auto configMgr = ConfigManagerFactory::getConfigFor(ConfigManagerFactory::APP_CHANGE_EVENT_DRIVER);
 
+    QString maksIdleTimeStr = configMgr->get(EventDriverConfigManager::MAKS_IDLE_TIME_MS_KEY).toString();
+    if (maksIdleTimeStr.size() > 0) {
+        mMaksIdleTime = maksIdleTimeStr.toInt();
+        mAutosaveTimeout = mMaksIdleTime; // tmp
+    }
+
     QString reportFromStr = configMgr->get(EventDriverConfigManager::REPORT_FROM_KEY).toString();
     if (reportFromStr.size() > 0) {
         mTrackFrom = QTime::fromString(reportFromStr, "hh:mm:ss");

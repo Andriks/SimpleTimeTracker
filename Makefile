@@ -47,6 +47,7 @@ SRC_CPP_EVENT_DRIVER = \
 	statemachine.cpp \
 	statenotracking.cpp \
 	stateactivetracking.cpp \
+	stateidletracking.cpp \
 	$(NULL)
 
 OBJ += $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SRC_CPP))

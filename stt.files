@@ -45,3 +45,5 @@ src/event_driver/eventtracker.h
 src/event_driver/eventtracker.cpp
 src/event_driver/statechangemanager.h
 src/event_driver/statechangemanager.cpp
+src/event_driver/stateidletracking.h
+src/event_driver/stateidletracking.cpp

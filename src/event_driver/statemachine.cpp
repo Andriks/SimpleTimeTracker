@@ -4,6 +4,7 @@
 #include "statechangemanager.h"
 #include "statenotracking.h"
 #include "stateactivetracking.h"
+#include "stateidletracking.h"
 
 #include "linuxstatemanager.h"
 #include "eventtracker.h"
@@ -31,6 +32,8 @@ void StateMachine::init()
                                     std::make_shared<StateNoTracking>(this, stateChangeMgr)));
     mStateMap.insert(std::make_pair(StateEnum::ACTIVE_TRACKING,
                                     std::make_shared<StateActiveTracking>(this, stateChangeMgr)));
+    mStateMap.insert(std::make_pair(StateEnum::IDLE_TRACKING,
+                                    std::make_shared<StateIdleTracking>(this, stateChangeMgr)));
 
     mCurrState = getCurrState(mCurrStateKey);
 }

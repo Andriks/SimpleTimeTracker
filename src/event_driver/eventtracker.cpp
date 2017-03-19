@@ -45,6 +45,11 @@ AppInfo EventTracker::getCurrAppInfo()
     return AppInfo(pid, name, title, currTimeMs());
 }
 
+unsigned int EventTracker::getTimeFromLastSaveMs()
+{
+    return currTimeMs() - mLastSave;
+}
+
 unsigned int EventTracker::currTimeMs() const
 {
     return QDateTime::currentMSecsSinceEpoch();

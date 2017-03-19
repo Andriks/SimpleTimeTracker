@@ -12,6 +12,8 @@ StateEnum StateActiveTracking::checkNextState()
     StateEnum result = StateEnum::ACTIVE_TRACKING;
     if (needSwitchToNoTracking()) {
         result = StateEnum::NO_TRACKING;
+    } else if (needSwitchToIdleTracking()) {
+        result = StateEnum::IDLE_TRACKING;
     }
     return result;
 }
@@ -26,6 +28,9 @@ std::shared_ptr<IState> StateActiveTracking::goTo(StateEnum state)
     case StateEnum::NO_TRACKING:
         procSwitchToNoTracking();
         return mParent->getCurrState(StateEnum::NO_TRACKING);
+    case StateEnum::IDLE_TRACKING:
+        procSwitchToIdleTracking();
+        return mParent->getCurrState(StateEnum::IDLE_TRACKING);
     default:
         throw UnknownStateException();
     }
@@ -46,6 +51,24 @@ bool StateActiveTracking::needSwitchToNoTracking()
 }
 
 void StateActiveTracking::procSwitchToNoTracking()
+{
+    auto eventTracker = mStateChangeMgr->eventTracker();
+    eventTracker->forceSendChangeEvent(true);
+    eventTracker->dump();
+}
+
+bool StateActiveTracking::needSwitchToIdleTracking()
+{
+    auto conf = mStateChangeMgr->configuration();
+    auto osStateMgr = mStateChangeMgr->osStateMgr();
+
+//    qDebug() << osStateMgr->getIdleTimeMs();
+//    qDebug() << conf->getMaksIdleTimeMs();
+
+    return (osStateMgr->getIdleTimeMs() > conf->getMaksIdleTimeMs());
+}
+
+void StateActiveTracking::procSwitchToIdleTracking()
 {
     auto eventTracker = mStateChangeMgr->eventTracker();
     eventTracker->forceSendChangeEvent(true);

@@ -20,6 +20,8 @@ protected:
 private:
     bool needSwitchToNoTracking();
     void procSwitchToNoTracking();
+    bool needSwitchToIdleTracking();
+    void procSwitchToIdleTracking();
 
 };
 
