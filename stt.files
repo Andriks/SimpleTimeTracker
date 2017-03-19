@@ -41,3 +41,5 @@ src/event_driver/statemachine.h
 src/event_driver/statemachineexception.h
 src/event_driver/astate.h
 src/event_driver/activetrackingstate.cpp
+src/event_driver/eventtracker.h
+src/event_driver/eventtracker.cpp

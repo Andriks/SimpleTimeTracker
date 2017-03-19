@@ -24,6 +24,16 @@ public:
         duration(durationIn)
     {}
 
+    bool operator ==(const AppInfo& other) {
+        return (pid == other.pid
+                    && name == other.name);
+    }
+    bool operator !=(const AppInfo& other) {
+        return (pid != other.pid
+                    || name != other.name);
+    }
+
+
     QString pid;
     QString name;
     QString title;

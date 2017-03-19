@@ -42,6 +42,7 @@ SRC_CPP_EVENT_DRIVER = \
 	eventdriverserver.cpp \
 	eventdriverconfiguration.cpp \
 	linuxstatemanager.cpp \
+	eventtracker.cpp \
 	statemachine.cpp \
 	notrackingstate.cpp \
 	activetrackingstate.cpp \

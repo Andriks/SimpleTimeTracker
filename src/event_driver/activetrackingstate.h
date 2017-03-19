@@ -8,7 +8,9 @@
 class ActiveTrackingState: public AState
 {
 public:
-    ActiveTrackingState(StateMachine *parent, std::shared_ptr<IOSStateManager> osStateMgr);
+    ActiveTrackingState(StateMachine *parent,
+                        std::shared_ptr<IOSStateManager> osStateMgr,
+                        std::shared_ptr<EventTracker> eventTracker);
 
 public:
     virtual StateEnum checkNextState();
