@@ -4,7 +4,6 @@
 
 const unsigned int EventDriverConfiguration::DEFAULT_UPDATE_TIMEOUT_MS   = 1000;      // 1 sec
 const unsigned int EventDriverConfiguration::DEFAULT_AUTOSAVE_TIMEOUT_MS = 5*1000*60; // 5 min
-const unsigned int EventDriverConfiguration::DEFAULT_MAX_IDLE_TIME_MS    = 5*1000*60; // 5 min
 const QTime EventDriverConfiguration::DEFAULT_TIME_TRACK_FROM            = QTime(8, 0, 0);
 const QTime EventDriverConfiguration::DEFAULT_TIME_TRACK_TILL            = QTime(18, 0, 0);
 
@@ -12,16 +11,19 @@ void EventDriverConfiguration::readConfiguration()
 {
     mUpdateTimeout = DEFAULT_UPDATE_TIMEOUT_MS;
     mAutosaveTimeout = DEFAULT_AUTOSAVE_TIMEOUT_MS;
-    mMaksIdleTime = DEFAULT_MAX_IDLE_TIME_MS;
     mTrackFrom = DEFAULT_TIME_TRACK_FROM;
     mTrackTill = DEFAULT_TIME_TRACK_TILL;
 
     auto configMgr = ConfigManagerFactory::getConfigFor(ConfigManagerFactory::APP_CHANGE_EVENT_DRIVER);
 
-    QString maksIdleTimeStr = configMgr->get(EventDriverConfigManager::MAKS_IDLE_TIME_MS_KEY).toString();
-    if (maksIdleTimeStr.size() > 0) {
-        mMaksIdleTime = maksIdleTimeStr.toInt();
-        mAutosaveTimeout = mMaksIdleTime; // tmp
+    QString updateTimeOutStr = configMgr->get(EventDriverConfigManager::UPDATE_TIMEOUT_MS_KEY).toString();
+    if (updateTimeOutStr.size() > 0) {
+        mUpdateTimeout = updateTimeOutStr.toInt();
+    }
+
+    QString autosaveTimeOutStr = configMgr->get(EventDriverConfigManager::AUTOSAVE_TIMEOUT_MS_KEY).toString();
+    if (autosaveTimeOutStr.size() > 0) {
+        mAutosaveTimeout = autosaveTimeOutStr.toInt();
     }
 
     QString reportFromStr = configMgr->get(EventDriverConfigManager::REPORT_FROM_KEY).toString();
@@ -43,11 +45,6 @@ unsigned int EventDriverConfiguration::getUpdateTimeoutMs()
 unsigned int EventDriverConfiguration::getAutosaveTimeoutMs()
 {
     return mAutosaveTimeout;
-}
-
-unsigned int EventDriverConfiguration::getMaksIdleTimeMs()
-{
-    return mMaksIdleTime;
 }
 
 bool EventDriverConfiguration::isTrackedTime(QTime time)

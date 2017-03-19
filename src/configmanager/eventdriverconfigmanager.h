@@ -8,9 +8,10 @@ class EventDriverConfigManager: public IConfigManager
 {
 public:
     const static char* CONFIG_FILENAME;
+    const static char* UPDATE_TIMEOUT_MS_KEY;
+    const static char* AUTOSAVE_TIMEOUT_MS_KEY;
     const static char* REPORT_FROM_KEY;
     const static char* REPORT_TILL_KEY;
-    const static char* MAKS_IDLE_TIME_MS_KEY;
 
 public:
     bool isValid() override;

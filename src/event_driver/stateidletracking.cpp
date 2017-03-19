@@ -24,16 +24,17 @@ std::shared_ptr<IState> StateIdleTracking::goTo(StateEnum state)
     case StateEnum::IDLE_TRACKING:
         // ITSELF, NO STATE CHANGE
         procNoStateChange();
-        return mParent->getCurrState(StateEnum::IDLE_TRACKING);
+        break;
     case StateEnum::ACTIVE_TRACKING:
         procSwitchToActiveTracking();
-        return mParent->getCurrState(StateEnum::ACTIVE_TRACKING);
+        break;
     case StateEnum::NO_TRACKING:
         procSwitchToNoTracking();
-        return mParent->getCurrState(StateEnum::NO_TRACKING);
+        break;
     default:
         throw UnknownStateException();
     }
+    return mParent->getCurrState(state);
 }
 
 void StateIdleTracking::procNoStateChange()
@@ -42,9 +43,8 @@ void StateIdleTracking::procNoStateChange()
     auto osStateMgr = mStateChangeMgr->osStateMgr();
     auto conf = mStateChangeMgr->configuration();
     unsigned int autosaveTimeout = conf->getAutosaveTimeoutMs();
-    unsigned int maksIdleTime = conf->getMaksIdleTimeMs();
 
-    if (osStateMgr->getIdleTimeMs() > maksIdleTime
+    if (osStateMgr->getIdleTimeMs() > autosaveTimeout
             && eventTracker->getTimeFromLastSaveMs() > autosaveTimeout) {
         eventTracker->forceSendChangeEvent(true);
     }

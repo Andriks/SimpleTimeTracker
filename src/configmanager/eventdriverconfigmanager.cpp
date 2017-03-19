@@ -4,9 +4,10 @@
 #include <QDebug>
 
 const char* EventDriverConfigManager::CONFIG_FILENAME = "./config/eventdriver.json";
+const char* EventDriverConfigManager::UPDATE_TIMEOUT_MS_KEY = "update_timeout_ms";
+const char* EventDriverConfigManager::AUTOSAVE_TIMEOUT_MS_KEY = "autosave_timeout_ms";
 const char* EventDriverConfigManager::REPORT_FROM_KEY = "report_from";
 const char* EventDriverConfigManager::REPORT_TILL_KEY = "report_till";
-const char* EventDriverConfigManager::MAKS_IDLE_TIME_MS_KEY = "maks_idle_time_ms";
 
 bool EventDriverConfigManager::isValid()
 {
