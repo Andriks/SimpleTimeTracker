@@ -13,6 +13,7 @@ public:
 
     void forceSendChangeEvent(bool autosave = false);
     void sendChangeEvent(AppInfo newApp, bool autosave);
+    void dump();
 
     AppInfo getCachedAppInfo();
     AppInfo getCurrAppInfo();

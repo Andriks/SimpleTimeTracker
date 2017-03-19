@@ -13,7 +13,7 @@ private:
     static const QTime DEFAULT_TIME_TRACK_TILL;
 
 public:
-    void updateConfiguration();
+    void readConfiguration();
 
     unsigned int getUpdateTimeoutMs();
     unsigned int getAutosaveTimeoutMs();

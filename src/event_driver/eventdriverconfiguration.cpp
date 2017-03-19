@@ -2,14 +2,13 @@
 #include "configmanagerfactory.h"
 #include "eventdriverconfigmanager.h"
 
-
 const unsigned int EventDriverConfiguration::DEFAULT_UPDATE_TIMEOUT_MS   = 1000;      // 1 sec
 const unsigned int EventDriverConfiguration::DEFAULT_AUTOSAVE_TIMEOUT_MS = 5*1000*60; // 5 min
 const unsigned int EventDriverConfiguration::DEFAULT_MAX_IDLE_TIME_MS    = 5*1000*60; // 5 min
 const QTime EventDriverConfiguration::DEFAULT_TIME_TRACK_FROM            = QTime(8, 0, 0);
 const QTime EventDriverConfiguration::DEFAULT_TIME_TRACK_TILL            = QTime(18, 0, 0);
 
-void EventDriverConfiguration::updateConfiguration()
+void EventDriverConfiguration::readConfiguration()
 {
     mUpdateTimeout = DEFAULT_UPDATE_TIMEOUT_MS;
     mAutosaveTimeout = DEFAULT_AUTOSAVE_TIMEOUT_MS;

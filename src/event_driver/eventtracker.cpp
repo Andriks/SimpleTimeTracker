@@ -8,7 +8,7 @@
 EventTracker::EventTracker(std::shared_ptr<IOSStateManager> osStateMgr) :
     mOSStateMgr(osStateMgr)
 {
-    mLastApp = getCurrAppInfo();
+    dump();
 }
 
 void EventTracker::forceSendChangeEvent(bool autosave)
@@ -23,6 +23,12 @@ void EventTracker::forceSendChangeEvent(bool autosave)
 void EventTracker::sendChangeEvent(AppInfo newApp, bool autosave)
 {
     SignalHandler::Get().sendChangeAppEvent(newApp, autosave);
+}
+
+void EventTracker::dump()
+{
+    mLastApp = getCurrAppInfo();
+    mLastSave = currTimeMs();
 }
 
 AppInfo EventTracker::getCachedAppInfo()

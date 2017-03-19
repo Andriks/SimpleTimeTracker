@@ -1,6 +1,8 @@
 #include "statenotracking.h"
 #include "statemachineexception.h"
 
+#include "QTime"
+
 StateNoTracking::StateNoTracking(StateMachine *parent,
                                  std::shared_ptr<StateChangeManager> stateChangeMgr) :
     AState(parent, stateChangeMgr)
@@ -33,15 +35,15 @@ std::shared_ptr<IState> StateNoTracking::goTo(StateEnum state)
 
 void StateNoTracking::procNoStateChange()
 {
-    std::cout << "NoTrackingState::procNoStateChange() || " << std::endl;
+    // do nothing
 }
 
 bool StateNoTracking::needSwitchToActiveTracking()
 {
-    return true;
+    return mStateChangeMgr->configuration()->isTrackedTime(QTime::currentTime());
 }
 
 void StateNoTracking::procSwitchToActiveTracking()
 {
-    std::cout << "NoTrackingState::procSwitchToActiveTracking() || " << std::endl;
+    mStateChangeMgr->eventTracker()->dump();
 }
