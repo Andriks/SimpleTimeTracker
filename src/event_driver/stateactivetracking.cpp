@@ -41,10 +41,13 @@ void StateActiveTracking::procNoStateChange()
 
 bool StateActiveTracking::needSwitchToNoTracking()
 {
-    return false;
+    bool isTrackedTime = mStateChangeMgr->configuration()->isTrackedTime(QTime::currentTime());
+    return !isTrackedTime;
 }
 
 void StateActiveTracking::procSwitchToNoTracking()
 {
-    std::cout << "NoTrackingState::procSwitchToNoTracking() || " << std::endl;
+    auto eventTracker = mStateChangeMgr->eventTracker();
+    eventTracker->forceSendChangeEvent(true);
+    eventTracker->dump();
 }
