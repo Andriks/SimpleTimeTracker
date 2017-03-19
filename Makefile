@@ -39,8 +39,8 @@ SRC_CPP_CONFIGMANAGER = \
 	$(NULL)
 
 SRC_CPP_EVENT_DRIVER = \
-	eventdriverserver.cpp \
 	eventdriverconfiguration.cpp \
+	eventdriverserver.cpp \
 	linuxstatemanager.cpp \
 	eventtracker.cpp \
 	statechangemanager.cpp \

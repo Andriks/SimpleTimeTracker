@@ -1,16 +1,12 @@
 #include "eventdriverserver.h"
-#include "signalhandler.h"
-#include "configmanagerfactory.h"
-#include "eventdriverconfigmanager.h"
-#include "statemachine.h"
 
-#include <stdio.h>
 #include <thread>
 #include <chrono>
 
 #include <X11/Xlib.h>
 
-const unsigned int EventDriverServer::UPDATE_TIMEOUT_MS   = 1000;      // 1 sec
+#include "statemachine.h"
+#include "eventdriverconfiguration.h"
 
 void EventDriverServer::start()
 {
@@ -19,10 +15,14 @@ void EventDriverServer::start()
     }
     mIsRunning = true;
 
+    EventDriverConfiguration conf;
+    conf.readConfiguration();
+    const unsigned int timeout = conf.getUpdateTimeoutMs();
+
     StateMachine fsm;
     fsm.init();
     while (isRunning()) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(UPDATE_TIMEOUT_MS));
+        std::this_thread::sleep_for(std::chrono::milliseconds(timeout));
         fsm.procState();
     }
     // TODO: add fsm.stop() logic

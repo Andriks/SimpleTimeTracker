@@ -6,8 +6,6 @@
 
 class EventDriverServer : public IServer
 {
-    static const unsigned int UPDATE_TIMEOUT_MS;
-
 public:
     void start() override;
     void stop() override;
