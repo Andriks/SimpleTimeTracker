@@ -1,7 +1,7 @@
 #include "statemachine.h"
 
-#include "notrackingstate.h"
-#include "activetrackingstate.h"
+#include "statenotracking.h"
+#include "stateactivetracking.h"
 #include "statemachineexception.h"
 
 
@@ -27,8 +27,8 @@ void StateMachine::init()
     auto conf = std::make_shared<EventDriverConfiguration>();
     mStateChangeMgr->setConfiguration(conf);
 
-    mStateMap.insert(std::make_pair(StateEnum::NO_TRACKING, std::make_shared<NoTrackingState>(this, mStateChangeMgr)));
-    mStateMap.insert(std::make_pair(StateEnum::ACTIVE_TRACKING, std::make_shared<ActiveTrackingState>(this, mStateChangeMgr)));
+    mStateMap.insert(std::make_pair(StateEnum::NO_TRACKING, std::make_shared<StateNoTracking>(this, mStateChangeMgr)));
+    mStateMap.insert(std::make_pair(StateEnum::ACTIVE_TRACKING, std::make_shared<StateActiveTracking>(this, mStateChangeMgr)));
 
     mCurrState = getStatePtr(mCurrStateKey);
 }

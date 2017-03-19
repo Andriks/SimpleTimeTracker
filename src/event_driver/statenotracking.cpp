@@ -1,13 +1,13 @@
-#include "notrackingstate.h"
+#include "statenotracking.h"
 #include "statemachineexception.h"
 
-NoTrackingState::NoTrackingState(StateMachine *parent,
+StateNoTracking::StateNoTracking(StateMachine *parent,
                                  std::shared_ptr<StateChangeManager> stateChangeMgr) :
     AState(parent, stateChangeMgr)
 {
 }
 
-StateEnum NoTrackingState::checkNextState()
+StateEnum StateNoTracking::checkNextState()
 {
     StateEnum result = StateEnum::NO_TRACKING;
     if (needSwitchToActiveTracking()) {
@@ -16,7 +16,7 @@ StateEnum NoTrackingState::checkNextState()
     return result;
 }
 
-std::shared_ptr<IState> NoTrackingState::goTo(StateEnum state)
+std::shared_ptr<IState> StateNoTracking::goTo(StateEnum state)
 {
     switch (state) {
     case StateEnum::NO_TRACKING:
@@ -31,17 +31,17 @@ std::shared_ptr<IState> NoTrackingState::goTo(StateEnum state)
     }
 }
 
-void NoTrackingState::procNoStateChange()
+void StateNoTracking::procNoStateChange()
 {
     std::cout << "NoTrackingState::procNoStateChange() || " << std::endl;
 }
 
-bool NoTrackingState::needSwitchToActiveTracking()
+bool StateNoTracking::needSwitchToActiveTracking()
 {
     return true;
 }
 
-void NoTrackingState::procSwitchToActiveTracking()
+void StateNoTracking::procSwitchToActiveTracking()
 {
     std::cout << "NoTrackingState::procSwitchToActiveTracking() || " << std::endl;
 }

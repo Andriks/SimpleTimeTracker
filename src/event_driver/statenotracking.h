@@ -5,10 +5,10 @@
 
 #include "astate.h"
 
-class NoTrackingState: public AState
+class StateNoTracking: public AState
 {
 public:
-    NoTrackingState(StateMachine *parent, std::shared_ptr<StateChangeManager> stateChangeMgr);
+    StateNoTracking(StateMachine *parent, std::shared_ptr<StateChangeManager> stateChangeMgr);
 
 public:
     virtual StateEnum checkNextState();
