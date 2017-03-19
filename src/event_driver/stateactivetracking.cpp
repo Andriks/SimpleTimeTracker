@@ -22,10 +22,10 @@ std::shared_ptr<IState> StateActiveTracking::goTo(StateEnum state)
     case StateEnum::ACTIVE_TRACKING:
         // ITSELF, NO STATE CHANGE
         procNoStateChange();
-        return mParent->getStatePtr(StateEnum::ACTIVE_TRACKING);
+        return mParent->getCurrState(StateEnum::ACTIVE_TRACKING);
     case StateEnum::NO_TRACKING:
         procSwitchToNoTracking();
-        return mParent->getStatePtr(StateEnum::NO_TRACKING);
+        return mParent->getCurrState(StateEnum::NO_TRACKING);
     default:
         throw UnknownStateException();
     }

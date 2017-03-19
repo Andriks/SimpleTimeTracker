@@ -5,6 +5,7 @@
 
 #include "istate.h"
 #include "statemachine.h"
+#include "statechangemanager.h"
 
 
 class AState : public IState {

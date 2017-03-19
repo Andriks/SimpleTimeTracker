@@ -5,7 +5,6 @@
 #include <memory>
 
 #include "istate.h"
-#include "statechangemanager.h"
 
 enum class StateEnum {
     NO_TRACKING = 1,
@@ -22,10 +21,9 @@ public:
     StateMachine();
     void init();
     void procState();
-    state_ptr getStatePtr(StateEnum key);
+    state_ptr getCurrState(StateEnum key);
 
 private:
-    std::shared_ptr<StateChangeManager> mStateChangeMgr;
     StateEnum mCurrStateKey;
     state_ptr mCurrState;
     std::map<StateEnum, state_ptr> mStateMap;
