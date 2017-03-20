@@ -40,8 +40,12 @@ std::shared_ptr<IState> StateActiveTracking::goTo(StateEnum state)
 void StateActiveTracking::procNoStateChange()
 {
     auto eventTracker = mStateChangeMgr->eventTracker();
+    auto conf = mStateChangeMgr->configuration();
+
     if (eventTracker->getCachedAppInfo() != eventTracker->getCurrAppInfo()) {
         eventTracker->forceSendChangeEvent(false);
+    } else if (eventTracker->getTimeFromLastSaveMs() > conf->getAutosaveTimeoutMs()) {
+        eventTracker->forceSendChangeEvent(true);
     }
 }
 
