@@ -16,6 +16,7 @@ public:
 
     unsigned int getUpdateTimeoutMs();
     unsigned int getAutosaveTimeoutMs();
+    unsigned int getIdleTimeoutMs();
     bool isTrackedTime(QTime time);
 
 private:

@@ -11,12 +11,16 @@ EventTracker::EventTracker(std::shared_ptr<IOSStateManager> osStateMgr) :
     dump();
 }
 
-void EventTracker::forceSendChangeEvent(bool autosave)
+void EventTracker::forceSendChangeEvent(bool autosave, bool idle)
 {
+    if (idle) {
+        mLastApp = AppInfo("-1", "idle", "", mLastApp.timeStarted);
+    }
+
     mLastApp.duration = currTimeMs() - mLastApp.timeStarted;
 
-    mLastSave = currTimeMs();
     sendChangeEvent(mLastApp, autosave);
+    mLastSave = currTimeMs();
     mLastApp = getCurrAppInfo();
 }
 

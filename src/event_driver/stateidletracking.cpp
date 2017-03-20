@@ -43,10 +43,11 @@ void StateIdleTracking::procNoStateChange()
     auto osStateMgr = mStateChangeMgr->osStateMgr();
     auto conf = mStateChangeMgr->configuration();
     unsigned int autosaveTimeout = conf->getAutosaveTimeoutMs();
+    unsigned int idleTimeout = conf->getIdleTimeoutMs();
 
-    if (osStateMgr->getIdleTimeMs() > autosaveTimeout
+    if (osStateMgr->getIdleTimeMs() > idleTimeout
             && eventTracker->getTimeFromLastSaveMs() > autosaveTimeout) {
-        eventTracker->forceSendChangeEvent(true);
+        eventTracker->forceSendChangeEvent(true, true);
     }
 }
 

@@ -47,6 +47,12 @@ unsigned int EventDriverConfiguration::getAutosaveTimeoutMs()
     return mAutosaveTimeout;
 }
 
+unsigned int EventDriverConfiguration::getIdleTimeoutMs()
+{
+    // TODO: add own cofig param for idle
+    return mAutosaveTimeout;
+}
+
 bool EventDriverConfiguration::isTrackedTime(QTime time)
 {
     return (time >= mTrackFrom) && (time < mTrackTill);

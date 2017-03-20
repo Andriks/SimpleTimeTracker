@@ -11,7 +11,7 @@ class EventTracker
 public:
     EventTracker(std::shared_ptr<IOSStateManager> osStateMgr);
 
-    void forceSendChangeEvent(bool autosave = false);
+    void forceSendChangeEvent(bool autosave = false, bool idle = false);
     void sendChangeEvent(AppInfo newApp, bool autosave);
     void dump();
 
