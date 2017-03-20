@@ -8,6 +8,7 @@ class EventDriverConfiguration
 private:
     static const unsigned int DEFAULT_UPDATE_TIMEOUT_MS;
     static const unsigned int DEFAULT_AUTOSAVE_TIMEOUT_MS;
+    static const unsigned int DEFAULT_IDLE_TIMEOUT_MS;
     static const QTime DEFAULT_TIME_TRACK_FROM;
     static const QTime DEFAULT_TIME_TRACK_TILL;
 
@@ -22,7 +23,7 @@ public:
 private:
     unsigned int mUpdateTimeout;
     unsigned int mAutosaveTimeout;
-    unsigned int mMaksIdleTime;
+    unsigned int mIdleTimeout;
     QTime mTrackFrom;
     QTime mTrackTill;
 

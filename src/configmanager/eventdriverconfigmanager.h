@@ -1,8 +1,7 @@
-#ifndef APPCHANGEEVENTDRIVERCONFIGMANAGER_H
-#define APPCHANGEEVENTDRIVERCONFIGMANAGER_H
+#ifndef EVENTDRIVERCONFIGMANAGER_H
+#define EVENTDRIVERCONFIGMANAGER_H
 
 #include "iconfigmanager.h"
-
 
 class EventDriverConfigManager: public IConfigManager
 {
@@ -10,6 +9,7 @@ public:
     const static char* CONFIG_FILENAME;
     const static char* UPDATE_TIMEOUT_MS_KEY;
     const static char* AUTOSAVE_TIMEOUT_MS_KEY;
+    const static char* IDLE_TIMEOUT_MS_KEY;
     const static char* REPORT_FROM_KEY;
     const static char* REPORT_TILL_KEY;
 
@@ -23,4 +23,4 @@ private:
     QJsonObject mConfig;
 };
 
-#endif // APPCHANGEEVENTDRIVERCONFIGMANAGER_H
+#endif // EVENTDRIVERCONFIGMANAGER_H

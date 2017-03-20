@@ -67,7 +67,7 @@ bool StateActiveTracking::needSwitchToIdleTracking()
     auto conf = mStateChangeMgr->configuration();
     auto osStateMgr = mStateChangeMgr->osStateMgr();
 
-    return (osStateMgr->getIdleTimeMs() > conf->getAutosaveTimeoutMs());
+    return (osStateMgr->getIdleTimeMs() > conf->getIdleTimeoutMs());
 }
 
 void StateActiveTracking::procSwitchToIdleTracking()

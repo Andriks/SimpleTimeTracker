@@ -54,14 +54,17 @@ void StateIdleTracking::procNoStateChange()
 bool StateIdleTracking::needSwitchToActiveTracking()
 {
     auto eventTracker = mStateChangeMgr->eventTracker();
-    return (eventTracker->getCurrAppInfo() != eventTracker->getCachedAppInfo());
+    auto osStateMgr = mStateChangeMgr->osStateMgr();
+    auto conf = mStateChangeMgr->configuration();
+    return (eventTracker->getCurrAppInfo() != eventTracker->getCachedAppInfo()
+                || osStateMgr->getIdleTimeMs() < conf->getIdleTimeoutMs());
 }
 
 void StateIdleTracking::procSwitchToActiveTracking()
 {
     std::cout << "[debug] " << "IdleTracking -> ActiveTracking" << std::endl;
     auto eventTracker = mStateChangeMgr->eventTracker();
-    eventTracker->forceSendChangeEvent(true);
+    eventTracker->forceSendChangeEvent(true, true);
 }
 
 bool StateIdleTracking::needSwitchToNoTracking()
