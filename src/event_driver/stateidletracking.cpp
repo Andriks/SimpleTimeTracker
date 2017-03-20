@@ -59,9 +59,9 @@ bool StateIdleTracking::needSwitchToActiveTracking()
 
 void StateIdleTracking::procSwitchToActiveTracking()
 {
+    std::cout << "[debug] " << "IdleTracking -> ActiveTracking" << std::endl;
     auto eventTracker = mStateChangeMgr->eventTracker();
     eventTracker->forceSendChangeEvent(true);
-    eventTracker->dump();
 }
 
 bool StateIdleTracking::needSwitchToNoTracking()
@@ -72,7 +72,7 @@ bool StateIdleTracking::needSwitchToNoTracking()
 
 void StateIdleTracking::procSwitchToNoTracking()
 {
+    std::cout << "[debug] " << "IdleTracking -> NoTracking" << std::endl;
     auto eventTracker = mStateChangeMgr->eventTracker();
     eventTracker->forceSendChangeEvent(true);
-    eventTracker->dump();
 }

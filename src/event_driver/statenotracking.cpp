@@ -46,5 +46,6 @@ bool StateNoTracking::needSwitchToActiveTracking()
 
 void StateNoTracking::procSwitchToActiveTracking()
 {
+    std::cout << "[debug] " << "NoTracking -> ActiveTracking" << std::endl;
     mStateChangeMgr->eventTracker()->dump();
 }

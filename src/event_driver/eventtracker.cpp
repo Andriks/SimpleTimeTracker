@@ -18,10 +18,8 @@ void EventTracker::forceSendChangeEvent(bool autosave, bool idle)
     }
 
     mLastApp.duration = currTimeMs() - mLastApp.timeStarted;
-
     sendChangeEvent(mLastApp, autosave);
-    mLastSave = currTimeMs();
-    mLastApp = getCurrAppInfo();
+    dump();
 }
 
 void EventTracker::sendChangeEvent(AppInfo newApp, bool autosave)
