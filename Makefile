@@ -20,6 +20,7 @@ INC_PATH = \
 	-Isrc/headers \
 	-I$(CONFIGMANAGER_DIR) \
 	-I$(EVENT_DRIVER_DIR) \
+	-I$(EVENT_DRIVER_DIR)/state_machine \
 	-I$(SRC_DIR) \
 	$(NULL)
 
@@ -43,11 +44,11 @@ SRC_CPP_EVENT_DRIVER = \
 	eventdriverserver.cpp \
 	linuxstatemanager.cpp \
 	eventtracker.cpp \
-	statechangemanager.cpp \
-	statemachine.cpp \
-	statenotracking.cpp \
-	stateactivetracking.cpp \
-	stateidletracking.cpp \
+	state_machine/statechangemanager.cpp \
+	state_machine/statemachine.cpp \
+	state_machine/statenotracking.cpp \
+	state_machine/stateactivetracking.cpp \
+	state_machine/stateidletracking.cpp \
 	$(NULL)
 
 OBJ += $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SRC_CPP))
@@ -67,6 +68,7 @@ mkdir:
 	@mkdir -p $(OBJ_DIR)
 	@mkdir -p $(OBJ_DIR)/configmanager
 	@mkdir -p $(OBJ_DIR)/event_driver
+	@mkdir -p $(OBJ_DIR)/event_driver/state_machine
 	@mkdir -p $(BIN_DIR)
 
 clean: 

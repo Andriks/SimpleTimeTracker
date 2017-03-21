@@ -6,3 +6,4 @@ src/headers
 src/sources
 src/configmanager
 src/event_driver
+src/event_driver/state_machine
