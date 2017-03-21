@@ -6,6 +6,8 @@
 
 #include "istate.h"
 
+namespace driver {
+
 enum class StateEnum {
     NO_TRACKING = 1,
     ACTIVE_TRACKING = 2,
@@ -28,5 +30,7 @@ private:
     state_ptr mCurrState;
     std::map<StateEnum, state_ptr> mStateMap;
 };
+
+} // driver
 
 #endif // STATEMACHINE_H

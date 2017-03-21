@@ -2,6 +2,8 @@
 #include "configmanagerfactory.h"
 #include "eventdriverconfigmanager.h"
 
+namespace driver {
+
 const unsigned int EventDriverConfiguration::DEFAULT_UPDATE_TIMEOUT_MS   = 1000;      // 1 sec
 const unsigned int EventDriverConfiguration::DEFAULT_AUTOSAVE_TIMEOUT_MS = 5*1000*60; // 5 min
 const unsigned int EventDriverConfiguration::DEFAULT_IDLE_TIMEOUT_MS     = 5*1000*60; // 5 min
@@ -63,3 +65,5 @@ bool EventDriverConfiguration::isTrackedTime(QTime time)
 {
     return (time >= mTrackFrom) && (time < mTrackTill);
 }
+
+} // driver

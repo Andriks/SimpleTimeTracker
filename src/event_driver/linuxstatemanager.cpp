@@ -2,6 +2,8 @@
 
 #include <X11/Xlib.h>
 
+namespace driver {
+
 unsigned int LinuxStateManager::getIdleTimeMs()
 {
     return exec_cmd("xprintidle").toUInt();
@@ -43,3 +45,5 @@ QString LinuxStateManager::exec_cmd(char *cmd)
     // remove last symbol '\n' before return
     return result.remove(result.size()-1, 1);
 }
+
+} // driver

@@ -5,6 +5,8 @@
 
 #include "astate.h"
 
+namespace driver {
+
 class StateActiveTracking: public AState
 {
 public:
@@ -24,5 +26,7 @@ private:
     void procSwitchToIdleTracking();
 
 };
+
+} // driver
 
 #endif // ACTIVETRACKINGSTATE_H

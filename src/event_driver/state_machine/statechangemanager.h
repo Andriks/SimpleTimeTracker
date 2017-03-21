@@ -7,6 +7,8 @@
 #include "eventtracker.h"
 #include "eventdriverconfiguration.h"
 
+namespace driver {
+
 class StateChangeManager
 {
 public:
@@ -26,5 +28,7 @@ private:
     std::shared_ptr<EventTracker> mEventTracker;
     std::shared_ptr<EventDriverConfiguration> mConfiguration;
 };
+
+} // driver
 
 #endif // STATECHANGEMANAGER_H

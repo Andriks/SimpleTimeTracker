@@ -5,6 +5,8 @@
 
 #include "signalhandler.h"
 
+namespace driver {
+
 EventTracker::EventTracker(std::shared_ptr<IOSStateManager> osStateMgr) :
     mOSStateMgr(osStateMgr)
 {
@@ -56,3 +58,5 @@ unsigned int EventTracker::currTimeMs() const
 {
     return QDateTime::currentMSecsSinceEpoch();
 }
+
+} // driver

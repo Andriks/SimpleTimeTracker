@@ -3,6 +3,8 @@
 
 #include "QTime"
 
+namespace driver {
+
 StateNoTracking::StateNoTracking(StateMachine *parent,
                                  std::shared_ptr<StateChangeManager> stateChangeMgr) :
     AState(parent, stateChangeMgr)
@@ -49,3 +51,5 @@ void StateNoTracking::procSwitchToActiveTracking()
     std::cout << "[debug] " << "NoTracking -> ActiveTracking" << std::endl;
     mStateChangeMgr->eventTracker()->dump();
 }
+
+} // driver

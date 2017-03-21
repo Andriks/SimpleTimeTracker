@@ -3,6 +3,8 @@
 
 #include"iosstatemanager.h"
 
+namespace driver {
+
 class LinuxStateManager : public IOSStateManager
 {
 public:
@@ -14,5 +16,7 @@ public:
 private:
     QString exec_cmd(char* cmd);
 };
+
+} // driver
 
 #endif // LINUXSTATEMANAGER_H

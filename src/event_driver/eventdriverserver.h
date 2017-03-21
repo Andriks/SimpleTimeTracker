@@ -1,8 +1,9 @@
-
 #pragma once
 
 #include "iserver.h"
 #include "commontypes.h"
+
+namespace driver {
 
 class EventDriverServer : public IServer
 {
@@ -15,3 +16,5 @@ private:
     volatile bool mIsRunning = false;
 
 };
+
+} // driver

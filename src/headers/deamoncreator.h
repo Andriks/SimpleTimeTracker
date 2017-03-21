@@ -33,6 +33,6 @@ private:
     bool procExists(pid_t pid);
 
 private:
-    std::unique_ptr<IServer> mDriver = algo::make_unique<EventDriverServer>();
+    std::unique_ptr<IServer> mDriver = algo::make_unique<driver::EventDriverServer>();
     static std::string mLockfileName;
 };

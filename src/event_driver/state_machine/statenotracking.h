@@ -5,6 +5,8 @@
 
 #include "astate.h"
 
+namespace driver {
+
 class StateNoTracking: public AState
 {
 public:
@@ -22,5 +24,7 @@ private:
     void procSwitchToActiveTracking();
 
 };
+
+} // driver
 
 #endif // NOTRACKINGSTATE_H

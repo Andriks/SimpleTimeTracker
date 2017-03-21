@@ -1,6 +1,8 @@
 #include "stateactivetracking.h"
 #include "statemachineexception.h"
 
+namespace driver {
+
 StateActiveTracking::StateActiveTracking(StateMachine *parent,
                                          std::shared_ptr<StateChangeManager> stateChangeMgr) :
     AState(parent, stateChangeMgr)
@@ -76,3 +78,5 @@ void StateActiveTracking::procSwitchToIdleTracking()
     auto eventTracker = mStateChangeMgr->eventTracker();
     eventTracker->forceSendChangeEvent(true);
 }
+
+} // driver

@@ -3,6 +3,8 @@
 
 #include "astate.h"
 
+namespace driver {
+
 class StateIdleTracking: public AState
 {
 public:
@@ -21,5 +23,7 @@ private:
     bool needSwitchToNoTracking();
     void procSwitchToNoTracking();
 };
+
+} // driver
 
 #endif // STATEIDLETRACKING_H

@@ -3,6 +3,8 @@
 
 #include <QString>
 
+namespace driver {
+
 class IOSStateManager
 {
 public:
@@ -12,5 +14,7 @@ public:
     virtual QString getLastAppTitle() = 0;
 
 };
+
+} // driver
 
 #endif // IOSSTATEMANAGER_H

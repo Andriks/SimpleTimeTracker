@@ -7,6 +7,7 @@
 #include "statemachine.h"
 #include "statechangemanager.h"
 
+namespace driver {
 
 class AState : public IState {
 public:
@@ -19,5 +20,6 @@ protected:
     StateMachine *mParent;
     std::shared_ptr<StateChangeManager> mStateChangeMgr;
 };
+} // driver
 
 #endif // ASTATE_H

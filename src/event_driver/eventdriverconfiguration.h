@@ -3,6 +3,8 @@
 
 #include <QTime>
 
+namespace driver {
+
 class EventDriverConfiguration
 {
 private:
@@ -28,5 +30,7 @@ private:
     QTime mTrackTill;
 
 };
+
+} // driver
 
 #endif // EVENTDRIVERCONFIGURATION_H

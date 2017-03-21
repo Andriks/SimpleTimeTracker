@@ -4,6 +4,8 @@
 #include <exception>
 #include <string>
 
+namespace driver {
+
 class StateMachineException: public std::exception
 {
 public:
@@ -23,5 +25,6 @@ public:
     }
 };
 
+} // driver
 
 #endif // STATEMACHINEEXCEPTION_H

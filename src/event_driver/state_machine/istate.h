@@ -4,6 +4,8 @@
 #include <iostream>
 #include <memory>
 
+namespace driver {
+
 enum class StateEnum;
 
 class IState {
@@ -17,5 +19,6 @@ protected:
     virtual void procNoStateChange() = 0;
 
 };
+} // driver
 
 #endif // ISTATE_H

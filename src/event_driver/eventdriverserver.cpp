@@ -8,6 +8,8 @@
 #include "statemachine.h"
 #include "eventdriverconfiguration.h"
 
+namespace driver {
+
 void EventDriverServer::start()
 {
     if (isRunning()) {
@@ -38,3 +40,5 @@ void EventDriverServer::stop()
 bool EventDriverServer::isRunning() {
     return mIsRunning;
 }
+
+} // driver

@@ -1,5 +1,7 @@
 #include "statechangemanager.h"
 
+namespace driver {
+
 StateChangeManager::StateChangeManager() :
     mOSStateMgr(nullptr),
     mEventTracker(nullptr),
@@ -36,3 +38,5 @@ void StateChangeManager::setConfiguration(const std::shared_ptr<EventDriverConfi
 {
     mConfiguration = configuration;
 }
+
+} // driver

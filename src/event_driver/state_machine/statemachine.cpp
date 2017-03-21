@@ -10,6 +10,8 @@
 #include "eventtracker.h"
 #include "eventdriverconfiguration.h"
 
+namespace driver {
+
 StateMachine::StateMachine() :
     mCurrStateKey(StateEnum::NO_TRACKING),
     mCurrState(nullptr)
@@ -53,3 +55,5 @@ StateMachine::state_ptr StateMachine::getCurrState(StateEnum key)
 {
     return mStateMap[key];
 }
+
+} // driver

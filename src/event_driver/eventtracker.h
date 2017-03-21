@@ -6,6 +6,8 @@
 #include "commontypes.h"
 #include "iosstatemanager.h"
 
+namespace driver {
+
 class EventTracker
 {
 public:
@@ -25,5 +27,7 @@ private:
     AppInfo mLastApp;
     unsigned int mLastSave;
 };
+
+} // driver
 
 #endif // EVENTTRACKER_H
