@@ -1,0 +1,8 @@
+* implement smart logger
+* implement convenient config manager
+* implement Reporter polymorphic hierarchy
+* add configuring of prodactive/ not prodactive applications
+* adapt Database for work thru the Request/Response polymorphic objects
+* [maybe] remove SignalHandler
+* implement IServer in event_driver StateMachine
+* implement Windows event_driver
